@@ -1,0 +1,20 @@
+{
+  "name": "mailinabox-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "generate": "openapi-generator generate -i schema/mailinabox.yml",
+    "generate:typescript-fetch": "npm run generate -- -g typescript-fetch -o clients/typescript-fetch -t templates/typescript-fetch --additional-properties=typescriptThreePlus=true,npmName=mailinabox-api",
+    "lint": "prettier --check \"**/*.{md,yml}\"",
+    "lint:fix": "prettier --write '**/*.{md,yml}'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^1.0.13-4.3.1",
+    "prettier": "^2.0.5",
+    "swagger-ui-dist": "^3.27.0"
+  }
+}

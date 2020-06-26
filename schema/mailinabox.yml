@@ -30,7 +30,7 @@ paths:
       tags:
         - user
       summary: Get user information
-      operationId: me
+      operationId: getMe
       responses:
         200:
           description: Successful operation
@@ -42,8 +42,8 @@ paths:
     post:
       tags:
         - system
-      summary: Restrieve system status
-      operationId: status
+      summary: Retrieve system status
+      operationId: getStatus
       responses:
         200:
           description: Successful operation
@@ -51,12 +51,82 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SystemStatusResponse"
+  /system/privacy:
+    get:
+      tags:
+        - system
+      summary: Retrieve new-version check status
+      operationId: getPrivacy
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SystemGetPrivacyResponse"
+    post:
+      tags:
+        - system
+      summary: Update new-version check status
+      operationId: updatePrivacy
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/SystemUpdatePrivacyRequest"
+      responses:
+        200:
+          description: Successful operation
+          content:
+            text/html:
+              schema:
+                $ref: "#/components/schemas/SystemUpdatePrivacyResponse"
+
+  /system/reboot:
+    get:
+      tags:
+        - system
+      summary: Retrieve reboot status
+      operationId: getReboot
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SystemRebootResponse"
+
 components:
   securitySchemes:
     basicAuth:
       type: http
       scheme: basic
   schemas:
+    SystemUpdatePrivacyRequest:
+      type: object
+      required:
+        - value
+      properties:
+        value:
+          type: string
+          enum:
+            - private
+            - "off"
+    SystemGetPrivacyResponse:
+      type: boolean
+      description: |
+        Response:
+        * `true`: Private, new-version checks will not be performed
+        * `false`: Not private, new-version checks will be performed
+    SystemUpdatePrivacyResponse:
+      type: string
+    SystemRebootResponse:
+      type: boolean
+      description: |
+        Response:
+        * `true`: A reboot is required
+        * `false`: A reboot is not requir
     SystemStatusResponse:
       type: array
       items:
@@ -73,6 +143,7 @@ components:
           enum:
             - heading
             - ok
+            - warning
             - error
         text:
           type: string

@@ -7,7 +7,7 @@
     "build": "npm run generate:typescript-fetch",
     "postbuild": "cd clients/typescript-fetch && npm i && npm run build",
     "generate": "openapi-generator generate -i schema/mailinabox.yml",
-    "generate:typescript-fetch": "TS_POST_PROCESS_FILE='./node_modules/.bin/prettier --write' npm run generate -- -g typescript-fetch -o clients/typescript-fetch --additional-properties=typescriptThreePlus=true,npmName=mailinabox-api,legacyDiscriminatorBehavior=true,enablePostProcessFile=true",
+    "generate:typescript-fetch": "TS_POST_PROCESS_FILE='./node_modules/.bin/prettier --write' npm run generate -- -g typescript-fetch -t templates/typescript-fetch -o clients/typescript-fetch --additional-properties=typescriptThreePlus=true,npmName=mailinabox-api,legacyDiscriminatorBehavior=true,enablePostProcessFile=true",
     "lint": "prettier --check \"**/*.{md,yml}\"",
     "lint:fix": "prettier --write '**/*.{md,yml}'"
   },

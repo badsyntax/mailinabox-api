@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "npm run generate:typescript-fetch",
-    "postbuild": "cd clients/typescript-fetch && npm i && npm run build",
+    "postbuild": "npm i --prefix ./clients/typescript-fetch && npm run build --prefix ./clients/typescript-fetch",
     "generate": "openapi-generator generate -i schema/mailinabox.yml",
-    "generate:typescript-fetch": "TS_POST_PROCESS_FILE='./node_modules/.bin/prettier --write' npm run generate -- -g typescript-fetch -t templates/typescript-fetch -o clients/typescript-fetch --additional-properties=typescriptThreePlus=true,npmName=mailinabox-api,legacyDiscriminatorBehavior=true,enablePostProcessFile=true",
+    "generate:typescript-fetch": "TS_POST_PROCESS_FILE='./node_modules/.bin/prettier --write --config ./.prettierrc.json' npm run generate -- -g typescript-fetch -t templates/typescript-fetch -o clients/typescript-fetch --additional-properties=typescriptThreePlus=true,npmName=mailinabox-api,legacyDiscriminatorBehavior=true,enablePostProcessFile=true",
     "lint": "prettier --check \"**/*.{md,yml}\"",
     "lint:fix": "prettier --write '**/*.{md,yml}'"
   },
@@ -17,6 +17,10 @@
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^1.0.13-4.3.1",
     "prettier": "^2.0.5",
+    "prettier-plugin-organize-imports": "^1.1.0",
     "swagger-ui-dist": "^3.27.0"
+  },
+  "dependencies": {
+    "typescript": "^3.9.5"
   }
 }

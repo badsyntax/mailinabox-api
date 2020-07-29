@@ -382,6 +382,34 @@ paths:
             text/html:
               schema:
                 $ref: '#/components/schemas/MailAliasRemoveResponse'
+  /web/domains:
+    get:
+      tags:
+        - web
+      summary: Retrieve all static web domains
+      operationId: getDomains
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WebDomain'
+  /web/update:
+    post:
+      tags:
+        - web
+      summary: Update static websites
+      operationId: update
+      responses:
+        200:
+          description: Successful operation
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/WebUpdateResponse'
 components:
   securitySchemes:
     basicAuth:
@@ -817,3 +845,35 @@ components:
       enum:
         - ok
         - invalid
+    WebDomain:
+      type: object
+      required:
+        - custom_root
+        - domain
+        - root
+        - ssl_certificate
+        - static_enabled
+      properties:
+        custom_root:
+          type: string
+        domain:
+          type: string
+          format: hostname
+        root:
+          type: string
+        ssl_certificate:
+          type: array
+          minItems: 2
+          maxItems: 2
+          uniqueItems: true
+          items:
+            oneOf:
+              - type: string
+              - type: string
+                enum:
+                  - danger
+                  - success
+        static_enabled:
+          type: boolean
+    WebUpdateResponse:
+      type: string

@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Mail-in-a-Box
-  description: "This is the Mail-in-a-Box API HTTP specification."
+  description: 'This is the Mail-in-a-Box API HTTP specification.'
   contact:
     email: willis.rh@gmail.com
   license:
@@ -37,7 +37,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MeResponse"
+                $ref: '#/components/schemas/MeResponse'
   /system/status:
     post:
       tags:
@@ -50,7 +50,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SystemStatusResponse"
+                $ref: '#/components/schemas/SystemStatusResponse'
   /system/privacy:
     get:
       tags:
@@ -63,7 +63,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SystemPrivacyStatusResponse"
+                $ref: '#/components/schemas/SystemPrivacyStatusResponse'
     post:
       tags:
         - system
@@ -74,14 +74,14 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: "#/components/schemas/SystemUpdatePrivacyRequest"
+              $ref: '#/components/schemas/SystemUpdatePrivacyRequest'
       responses:
         200:
           description: Successful operation
           content:
             text/html:
               schema:
-                $ref: "#/components/schemas/SystemUpdatePrivacyResponse"
+                $ref: '#/components/schemas/SystemUpdatePrivacyResponse'
 
   /system/reboot:
     get:
@@ -95,7 +95,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SystemRebootStatusResponse"
+                $ref: '#/components/schemas/SystemRebootStatusResponse'
 
   /system/backup/status:
     get:
@@ -109,7 +109,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SystemBackupStatusResponse"
+                $ref: '#/components/schemas/SystemBackupStatusResponse'
 
   /ssl/status:
     get:
@@ -123,7 +123,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SSLStatusResponse"
+                $ref: '#/components/schemas/SSLStatusResponse'
   /ssl/csr/{domain}:
     post:
       tags:
@@ -142,7 +142,7 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: "#/components/schemas/SSLGenerateCSRRequest"
+              $ref: '#/components/schemas/SSLGenerateCSRRequest'
       responses:
         200:
           description: Successful operation
@@ -150,22 +150,520 @@ paths:
             text/html:
               schema:
                 type: string
+  /dns/secondary-nameserver:
+    get:
+      tags:
+        - dns
+      summary: Retrieve secondary nameserver
+      operationId: getDnsSecondaryNameserver
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DNSSecondaryNameserverResponse'
+  /dns/zones:
+    get:
+      tags:
+        - dns
+      summary: Retrieve DNS zones
+      operationId: getDnsZones
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DNSZonesResponse'
+  /dns/custom:
+    get:
+      tags:
+        - dns
+      summary: Retrieve custom DNS records
+      operationId: getDnsCustomRecords
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DNSCustomResponse'
+  /dns/dump:
+    get:
+      tags:
+        - dns
+      summary: Retrieve all DNS records
+      operationId: getDnsDump
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DNSDumpResponse'
+
+  /mail/users:
+    get:
+      tags:
+        - users
+      summary: Retrieve all users
+      operationId: getUsers
+      parameters:
+        - in: query
+          name: format
+          schema:
+            $ref: '#/components/schemas/MailUsersResponseFormat'
+          description: The format of the response
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MailUsersResponse'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/MailUsersSimpleResponse'
+  /mail/users/add:
+    post:
+      tags:
+        - users
+      summary: Add a new mail user
+      operationId: addUser
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MailUserAddRequest'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/MailUserAddResponse'
+  /mail/users/remove:
+    post:
+      tags:
+        - users
+      summary: Remove a mail user
+      operationId: removeUser
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MailUserRemoveRequest'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/MailUserRemoveResponse'
+  /mail/users/privileges/add:
+    post:
+      tags:
+        - users
+      summary: Add a privilege to a mail user
+      operationId: addUserPrivilege
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MailUserAddAdminPrivilegeRequest'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/MailUserAddAdminPrivilegeResponse'
+  /mail/users/privileges/remove:
+    post:
+      tags:
+        - users
+      summary: Remove a privilege from a mail user
+      operationId: removeUserPrivilege
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MailUserRemoveAdminPrivilegeRequest'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/MailUserRemoveAdminPrivilegeResponse'
+  /mail/users/password:
+    post:
+      tags:
+        - users
+      summary: Set a password for a user
+      operationId: setPassword
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MailUserSetPasswordRequest'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/MailUserSetPasswordResponse'
+  /mail/aliases:
+    get:
+      tags:
+        - aliases
+      summary: Retrieve all aliases
+      operationId: getAliases
+      parameters:
+        - in: query
+          name: format
+          schema:
+            $ref: '#/components/schemas/MailAliasesResponseFormat'
+          description: The format of the response
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MailAliasByDomain'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/MailAliasesSimpleResponse'
+  /mail/aliases/add:
+    post:
+      tags:
+        - aliases
+      summary: Add or update mail alias
+      operationId: upsertAlias
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MailAliasUpsertRequest'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/MailAliasUpsertResponse'
+  /mail/aliases/remove:
+    post:
+      tags:
+        - aliases
+      summary: Remove a mail alias
+      operationId: removeAlias
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MailAliasRemoveRequest'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/MailAliasRemoveResponse'
 components:
   securitySchemes:
     basicAuth:
       type: http
       scheme: basic
   schemas:
+    MailUsersResponseFormat:
+      type: string
+      enum:
+        - text
+        - json
+    MailAliasesResponseFormat:
+      type: string
+      enum:
+        - text
+        - json
+    MailUserSetPasswordResponse:
+      type: string
+    MailUserRemoveResponse:
+      type: string
+    MailUserAddResponse:
+      type: string
+    MailUserAddAdminPrivilegeResponse:
+      type: string
+    MailUserRemoveAdminPrivilegeResponse:
+      type: string
+    MailUsersSimpleResponse:
+      type: string
+    MailUsersResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/MailUserByDomain'
+    MailUserByDomain:
+      type: object
+      required:
+        - domain
+        - users
+      properties:
+        domain:
+          type: string
+          format: hostname
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/MailUser'
+    MailUser:
+      type: object
+      required:
+        - email
+        - privileges
+        - status
+      properties:
+        email:
+          type: string
+          format: email
+        privileges:
+          type: array
+          items:
+            $ref: '#/components/schemas/MailUserPrivilege'
+        status:
+          $ref: '#/components/schemas/MailUserStatus'
+        mailbox:
+          type: string
+    MailAliasesSimpleResponse:
+      type: string
+    MailAliasesResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/MailAliasByDomain'
+    MailAliasByDomain:
+      type: object
+      required:
+        - domain
+        - aliases
+      properties:
+        domain:
+          type: string
+          format: hostname
+        aliases:
+          type: array
+          items:
+            $ref: '#/components/schemas/MailAlias'
+    MailAlias:
+      type: object
+      required:
+        - address
+        - address_display
+        - forwards_to
+        - permitted_senders
+        - required
+      properties:
+        address:
+          type: string
+          format: email
+        address_display:
+          type: string
+          format: email
+        forwards_to:
+          type: array
+          items:
+            $ref: '#/components/schemas/MailAddress'
+        permitted_senders:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/MailAddress'
+        required:
+          type: boolean
+    MailAddress:
+      type: string
+      format: email
+    MailAliasUpsertResponse:
+      type: string
+    MailAliasUpsertRequest:
+      type: object
+      required:
+        - update_if_exists
+        - address
+        - forwards_to
+        - permitted_senders
+      properties:
+        update_if_exists:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 1
+        address:
+          type: string
+        forwards_to:
+          type: string
+        permitted_senders:
+          type: string
+          nullable: true
+    MailAliasRemoveResponse:
+      type: string
+    MailAliasRemoveRequest:
+      type: object
+      required:
+        - address
+      properties:
+        address:
+          type: string
+    DNSDumpResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/DNSDumpDomains'
+    DNSDumpDomains:
+      type: array
+      items:
+        oneOf:
+          - type: string
+          - $ref: '#/components/schemas/DNSDumpDomainRecords'
+    DNSDumpDomainRecords:
+      type: array
+      items:
+        $ref: '#/components/schemas/DNSDumpDomainRecord'
+    DNSDumpDomainRecord:
+      type: object
+      required:
+        - explanation
+        - qname
+        - type
+        - value
+      properties:
+        explanation:
+          type: string
+        qname:
+          type: string
+          format: hostname
+        type:
+          type: string
+        value:
+          type: string
+    DNSCustomRecord:
+      type: object
+      required:
+        - qname
+        - rtype
+        - value
+      properties:
+        qname:
+          type: string
+          format: hostname
+        rtype:
+          type: string
+        value:
+          type: string
+    DNSCustomResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/DNSCustomRecord'
+    DNSZonesResponse:
+      type: array
+      items:
+        type: string
+        format: hostname
+    DNSSecondaryNameserverResponse:
+      type: object
+      required:
+        - hostnames
+      properties:
+        hostnames:
+          type: array
+          items:
+            type: string
     SystemUpdatePrivacyRequest:
       type: object
       required:
         - value
       properties:
         value:
+          $ref: '#/components/schemas/SystemPrivacyStatus'
+    SystemPrivacyStatus:
+      type: string
+      enum:
+        - private
+        - 'off'
+    MailUserSetPasswordRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
           type: string
-          enum:
-            - private
-            - "off"
+          format: email
+        password:
+          type: string
+    MailUserAddRequest:
+      type: object
+      required:
+        - email
+        - password
+        - privileges
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        privileges:
+          $ref: '#/components/schemas/MailUserPrivilege'
+    MailUserRemoveRequest:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+    MailUserStatus:
+      type: string
+      enum:
+        - active
+        - inactive
+    MailUserPrivilege:
+      type: string
+      enum:
+        - admin
+        - ''
+    MailUserAddAdminPrivilegeRequest:
+      type: object
+      required:
+        - email
+        - privilege
+      properties:
+        email:
+          type: string
+          format: email
+        privilege:
+          $ref: '#/components/schemas/MailUserPrivilege'
+    MailUserRemoveAdminPrivilegeRequest:
+      type: object
+      required:
+        - email
+        - privilege
+      properties:
+        email:
+          type: string
+          format: email
+        privilege:
+          $ref: '#/components/schemas/MailUserPrivilege'
     SSLGenerateCSRRequest:
       type: object
       required:
@@ -190,7 +688,7 @@ components:
     SystemStatusResponse:
       type: array
       items:
-        $ref: "#/components/schemas/StatusEntry"
+        $ref: '#/components/schemas/StatusEntry'
     StatusEntry:
       type: object
       required:
@@ -199,18 +697,20 @@ components:
         - extra
       properties:
         type:
-          type: string
-          enum:
-            - heading
-            - ok
-            - warning
-            - error
+          $ref: '#/components/schemas/StatusEntryType'
         text:
           type: string
         extra:
           type: array
           items:
-            $ref: "#/components/schemas/StatusEntryExtra"
+            $ref: '#/components/schemas/StatusEntryExtra'
+    StatusEntryType:
+      type: string
+      enum:
+        - heading
+        - ok
+        - warning
+        - error
     StatusEntryExtra:
       type: object
       required:
@@ -229,7 +729,7 @@ components:
         backups:
           type: array
           items:
-            $ref: "#/components/schemas/SystemBackupStatus"
+            $ref: '#/components/schemas/SystemBackupStatus'
         unmatched_file_size:
           type: integer
           format: int32
@@ -273,7 +773,7 @@ components:
         status:
           type: array
           items:
-            $ref: "#/components/schemas/SSLStatus"
+            $ref: '#/components/schemas/SSLStatus'
     SSLStatus:
       type: object
       required:
@@ -283,14 +783,17 @@ components:
       properties:
         domain:
           type: string
+          format: hostname
         status:
-          type: string
-          enum:
-            - success
-            - danger
-            - not-applicable
+          $ref: '#/components/schemas/SSLStatusType'
         text:
           type: string
+    SSLStatusType:
+      type: string
+      enum:
+        - success
+        - danger
+        - not-applicable
     MeResponse:
       type: object
       required:
@@ -300,14 +803,17 @@ components:
           type: string
         email:
           type: string
+          format: email
         privileges:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/MailUserPrivilege'
         reason:
           type: string
         status:
-          type: string
-          enum:
-            - ok
-            - invalid
+          $ref: '#/components/schemas/MeAuthStatus'
+    MeAuthStatus:
+      type: string
+      enum:
+        - ok
+        - invalid

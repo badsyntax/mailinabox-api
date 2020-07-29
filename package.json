@@ -6,8 +6,10 @@
   "scripts": {
     "build": "npm run generate:typescript-fetch",
     "postbuild": "npm i --prefix ./clients/typescript-fetch && npm run build --prefix ./clients/typescript-fetch",
-    "generate": "openapi-generator generate -i schema/mailinabox.yml",
-    "generate:typescript-fetch": "TS_POST_PROCESS_FILE='./node_modules/.bin/prettier --write --config ./.prettierrc.json' npm run generate -- -g typescript-fetch -t templates/typescript-fetch -o clients/typescript-fetch --additional-properties=typescriptThreePlus=true,npmName=mailinabox-api,legacyDiscriminatorBehavior=true,enablePostProcessFile=true",
+    "generate": "openapi-generator generate -i schema/mailinabox.yml ",
+    "generate:typescript-fetch": "TS_POST_PROCESS_FILE='./node_modules/.bin/prettier --write --config ./.prettierrc.json' npm run generate -- -g typescript-fetch -t templates/typescript-fetch -o clients/typescript-fetch --additional-properties=typescriptThreePlus=true,npmName=mailinabox-api,enablePostProcessFile=true --generate-alias-as-model",
+    "generate:nodejs": "npm run generate -- -g nodejs-express-server -o servers/nodejs-express-server",
+    "generate:python": "npm run generate -- -g python-flask -o servers/python-flask",
     "lint": "prettier --check \"**/*.{md,yml}\"",
     "lint:fix": "prettier --write '**/*.{md,yml}'"
   },
@@ -15,9 +17,9 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^1.0.13-4.3.1",
+    "@openapitools/openapi-generator-cli": "^1.0.15-4.3.1",
     "prettier": "^2.0.5",
-    "prettier-plugin-organize-imports": "^1.1.0",
-    "typescript": "^3.9.5"
+    "prettier-plugin-organize-imports": "^1.1.1",
+    "typescript": "^3.9.7"
   }
 }

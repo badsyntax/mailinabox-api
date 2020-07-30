@@ -4,6 +4,8 @@
 
 ### typescript-fetch
 
+#### Supporting oneOf response types
+
 The [Response Body](https://swagger.io/docs/specification/describing-responses/#body) spec says:
 
 > The schema keyword is used to describe the response body. A schema can define:
@@ -28,4 +30,21 @@ The mailinabox API returns primitive data types (eg `boolean`) for `application/
          {{/returnSimpleType}}
          {{/returnTypeIsPrimitive}}
          {{^returnTypeIsPrimitive}}
+```
+
+#### Support posting text/(plain|html) bodies
+
+Prevent quotes added to text/plain POST body. This seems like a bug in the generator, see  https://github.com/OpenAPITools/openapi-generator/issues/7083.
+
+```diff
+--- a/templates/typescript-fetch/runtime.mustache
++++ b/templates/typescript-fetch/runtime.mustache
+@@ -50,7 +50,7 @@ export class BaseAPI {
+             // do not handle correctly sometimes.
+             url += '?' + this.configuration.queryParamsStringify(context.query);
+         }
+-        const body = ((typeof FormData !== "undefined" && context.body instanceof FormData) || context.body instanceof URLSearchParams || isBlob(context.body))
++        const body = ((typeof FormData !== "undefined" && context.body instanceof FormData) || context.body instanceof URLSearchParams || isBlob(context.body)) || context.headers['Content-Type'] !== 'application/json'
+            ? context.body
+            : JSON.stringify(context.body);
 ```

@@ -74,14 +74,14 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/SystemUpdatePrivacyRequest'
+              $ref: '#/components/schemas/SystemPrivacyUpdateRequest'
       responses:
         200:
           description: Successful operation
           content:
             text/html:
               schema:
-                $ref: '#/components/schemas/SystemUpdatePrivacyResponse'
+                $ref: '#/components/schemas/SystemPrivacyUpdateResponse'
 
   /system/reboot:
     get:
@@ -123,6 +123,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SystemBackupConfigResponse'
+    post:
+      tags:
+        - system
+      summary: Update backup config
+      operationId: updateSystemBackupConfig
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SystemBackupConfigUpdateRequest'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/SystemBackupConfigUpdateResponse'
   /ssl/status:
     get:
       tags:
@@ -154,7 +172,7 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/SSLGenerateCSRRequest'
+              $ref: '#/components/schemas/SSLCSRGenerateRequest'
       responses:
         200:
           description: Successful operation
@@ -173,14 +191,14 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/SSLInstallCertificateRequest'
+              $ref: '#/components/schemas/SSLCertificateInstallRequest'
       responses:
         200:
           description: Successful operation
           content:
             text/html:
               schema:
-                $ref: '#/components/schemas/SSLInstallCertificateResponse'
+                $ref: '#/components/schemas/SSLCertificateInstallResponse'
   /dns/secondary-nameserver:
     get:
       tags:
@@ -646,7 +664,7 @@ components:
           type: array
           items:
             type: string
-    SystemUpdatePrivacyRequest:
+    SystemPrivacyUpdateRequest:
       type: object
       required:
         - value
@@ -723,14 +741,14 @@ components:
           format: email
         privilege:
           $ref: '#/components/schemas/MailUserPrivilege'
-    SSLGenerateCSRRequest:
+    SSLCSRGenerateRequest:
       type: object
       required:
         - countrycode
       properties:
         countrycode:
           type: string
-    SSLInstallCertificateRequest:
+    SSLCertificateInstallRequest:
       type: object
       required:
         - domain
@@ -744,7 +762,7 @@ components:
           type: string
         chain:
           type: string
-    SSLInstallCertificateResponse:
+    SSLCertificateInstallResponse:
       type: string
     SystemPrivacyStatusResponse:
       type: boolean
@@ -752,7 +770,7 @@ components:
         Response:
         * `true`: Private, new-version checks will not be performed
         * `false`: Not private, new-version checks will be performed
-    SystemUpdatePrivacyResponse:
+    SystemPrivacyUpdateResponse:
       type: string
     SystemRebootStatusResponse:
       type: boolean
@@ -796,6 +814,27 @@ components:
           type: string
         text:
           type: string
+    SystemBackupConfigUpdateRequest:
+      type: object
+      required:
+        - target
+        - target_user
+        - target_pass
+        - min_age
+      properties:
+        target:
+          type: string
+          format: hostname
+        target_user:
+          type: string
+        target_pass:
+          type: string
+        min_age:
+          type: integer
+          format: int32
+          minimum: 1
+    SystemBackupConfigUpdateResponse:
+      type: string
     SystemBackupConfigResponse:
       type: object
       required:

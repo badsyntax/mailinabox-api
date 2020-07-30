@@ -110,7 +110,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SystemBackupStatusResponse'
-
+  /system/backup/config:
+    get:
+      tags:
+        - system
+      summary: Retrieve backup config
+      operationId: getSystemBackupConfig
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemBackupConfigResponse'
   /ssl/status:
     get:
       tags:
@@ -129,7 +141,7 @@ paths:
       tags:
         - ssl
       summary: Generate CSR for domain
-      operationId: generateCSR
+      operationId: generateSSLCSR
       parameters:
         - in: path
           name: domain
@@ -150,6 +162,25 @@ paths:
             text/html:
               schema:
                 type: string
+  /ssl/install:
+    post:
+      tags:
+        - ssl
+      summary: Install custom certificate
+      operationId: installSSLCertificate
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SSLInstallCertificateRequest'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/SSLInstallCertificateResponse'
   /dns/secondary-nameserver:
     get:
       tags:
@@ -207,8 +238,8 @@ paths:
     get:
       tags:
         - users
-      summary: Retrieve all users
-      operationId: getUsers
+      summary: Retrieve all mail users
+      operationId: getMailUsers
       parameters:
         - in: query
           name: format
@@ -230,7 +261,7 @@ paths:
       tags:
         - users
       summary: Add a new mail user
-      operationId: addUser
+      operationId: addMailUser
       requestBody:
         required: true
         content:
@@ -249,7 +280,7 @@ paths:
       tags:
         - users
       summary: Remove a mail user
-      operationId: removeUser
+      operationId: removeMailUser
       requestBody:
         required: true
         content:
@@ -268,7 +299,7 @@ paths:
       tags:
         - users
       summary: Add a privilege to a mail user
-      operationId: addUserPrivilege
+      operationId: addMailUserPrivilege
       requestBody:
         required: true
         content:
@@ -287,7 +318,7 @@ paths:
       tags:
         - users
       summary: Remove a privilege from a mail user
-      operationId: removeUserPrivilege
+      operationId: removeMailUserPrivilege
       requestBody:
         required: true
         content:
@@ -306,7 +337,7 @@ paths:
       tags:
         - users
       summary: Set a password for a user
-      operationId: setPassword
+      operationId: setMailUserPassword
       requestBody:
         required: true
         content:
@@ -325,7 +356,7 @@ paths:
       tags:
         - aliases
       summary: Retrieve all aliases
-      operationId: getAliases
+      operationId: getMailAliases
       parameters:
         - in: query
           name: format
@@ -349,7 +380,7 @@ paths:
       tags:
         - aliases
       summary: Add or update mail alias
-      operationId: upsertAlias
+      operationId: upsertMailAlias
       requestBody:
         required: true
         content:
@@ -368,7 +399,7 @@ paths:
       tags:
         - aliases
       summary: Remove a mail alias
-      operationId: removeAlias
+      operationId: removeMailAlias
       requestBody:
         required: true
         content:
@@ -387,7 +418,7 @@ paths:
       tags:
         - web
       summary: Retrieve all static web domains
-      operationId: getDomains
+      operationId: getWebDomains
       responses:
         200:
           description: Successful operation
@@ -402,7 +433,7 @@ paths:
       tags:
         - web
       summary: Update static websites
-      operationId: update
+      operationId: updateWeb
       responses:
         200:
           description: Successful operation
@@ -699,6 +730,22 @@ components:
       properties:
         countrycode:
           type: string
+    SSLInstallCertificateRequest:
+      type: object
+      required:
+        - domain
+        - cert
+        - chain
+      properties:
+        domain:
+          type: string
+          format: hostname
+        cert:
+          type: string
+        chain:
+          type: string
+    SSLInstallCertificateResponse:
+      type: string
     SystemPrivacyStatusResponse:
       type: boolean
       description: |
@@ -712,7 +759,7 @@ components:
       description: |
         Response:
         * `true`: A reboot is required
-        * `false`: A reboot is not requir
+        * `false`: A reboot is not required
     SystemStatusResponse:
       type: array
       items:
@@ -748,6 +795,32 @@ components:
         monospace:
           type: string
         text:
+          type: string
+    SystemBackupConfigResponse:
+      type: object
+      required:
+        - enc_pw_file
+        - file_target_directory
+        - min_age_in_days
+        - ssh_pub_key
+        - target
+      properties:
+        enc_pw_file:
+          type: string
+        file_target_directory:
+          type: string
+        min_age_in_days:
+          type: integer
+          format: int32
+          minimum: 1
+        ssh_pub_key:
+          type: string
+        target:
+          type: string
+          format: hostname
+        target_user:
+          type: string
+        target_pass:
           type: string
     SystemBackupStatusResponse:
       type: object

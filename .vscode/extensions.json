@@ -1,3 +1,7 @@
 {
-  "recommendations": ["dawhite.mustache"]
+  "recommendations": [
+    "dawhite.mustache",
+    "esbenp.prettier-vscode",
+    "streetsidesoftware.code-spell-checker"
+  ]
 }

@@ -213,6 +213,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DNSSecondaryNameserverResponse'
+    post:
+      tags:
+        - dns
+      summary: Add a secondary nameserver
+      operationId: addDnsSecondaryNameserver
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DNSSecondaryNameserverAddRequest'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/DNSSecondaryNameserverAddResponse'
   /dns/zones:
     get:
       tags:
@@ -240,40 +258,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/DNSCustomResponse'
   /dns/custom/{domain}/{type}:
+    parameters:
+      - in: path
+        name: domain
+        schema:
+          type: string
+          format: hostname
+        required: true
+        description: DNS record domain
+      - in: path
+        name: type
+        schema:
+          $ref: '#/components/schemas/DNSRecordType'
+        required: true
+        description: Record type
     post:
       tags:
         - dns
-      summary: Add custom DNS record
+      summary: Add a custom DNS record
       operationId: addDnsCustomRecord
-      parameters:
-        - in: path
-          name: domain
-          schema:
-            type: string
-            format: hostname
-          required: true
-          description: DNS record domain
-        - in: path
-          name: type
-          schema:
-            enum:
-              - A
-              - AAAA
-              - CAA
-              - CNAME
-              - TXT
-              - MX
-              - SRV
-              - SSHFP
-              - NS
-          required: true
-          description: Record type
       requestBody:
-        required: true
-        content:
-          text/plain:
-            schema:
-              $ref: '#/components/schemas/DNSCustomRecordAddRequest'
+        $ref: '#/components/requestBodies/DNSCustomRecordRequest'
       responses:
         200:
           description: Successful operation
@@ -281,6 +286,20 @@ paths:
             text/html:
               schema:
                 $ref: '#/components/schemas/DNSCustomRecordAddResponse'
+    delete:
+      tags:
+        - dns
+      summary: Remove a custom DNS record
+      operationId: removeDnsCustomRecord
+      requestBody:
+        $ref: '#/components/requestBodies/DNSCustomRecordRequest'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/DNSCustomRecordRemoveResponse'
   /dns/dump:
     get:
       tags:
@@ -507,6 +526,14 @@ components:
     basicAuth:
       type: http
       scheme: basic
+  requestBodies:
+    DNSCustomRecordRequest:
+      description: The value of the DNS record
+      required: true
+      content:
+        text/plain:
+          schema:
+            type: string
   schemas:
     MailUsersResponseFormat:
       type: string
@@ -644,6 +671,17 @@ components:
       properties:
         address:
           type: string
+    DNSRecordType:
+      enum:
+        - A
+        - AAAA
+        - CAA
+        - CNAME
+        - TXT
+        - MX
+        - SRV
+        - SSHFP
+        - NS
     DNSDumpResponse:
       type: array
       items:
@@ -686,7 +724,7 @@ components:
           type: string
           format: hostname
         rtype:
-          type: string
+          $ref: '#/components/schemas/DNSRecordType'
         value:
           type: string
     DNSCustomResponse:
@@ -707,9 +745,19 @@ components:
           type: array
           items:
             type: string
-    DNSCustomRecordAddRequest:
+    DNSCustomRecordRemoveResponse:
       type: string
     DNSCustomRecordAddResponse:
+      type: string
+    DNSSecondaryNameserverAddRequest:
+      type: object
+      required:
+        - hostnames
+      properties:
+        hostnames:
+          type: string
+          description: Hostnames separated with commas or spaces
+    DNSSecondaryNameserverAddResponse:
       type: string
     SystemPrivacyUpdateRequest:
       type: object

@@ -8,7 +8,11 @@ Currently only shipping `typescript-fetch` but feel free to create an issue if y
 
 Note the specification is not complete and does not cover all endpoints, although I do plan on covering the entire API, stay tuned.
 
-## Swagger editor
+## OpenAPI HTTP specification
+
+See: https://github.com/badsyntax/mailinabox-api/blob/master/schema/mailinabox.yml
+
+### Swagger editor
 
 Use the swagger editor to explore the api:
 

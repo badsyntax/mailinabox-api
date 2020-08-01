@@ -1,13 +1,15 @@
 openapi: 3.0.3
 info:
   title: Mail-in-a-Box
-  description: 'This is the Mail-in-a-Box API HTTP specification.'
+  description: 'Mail-in-a-Box API HTTP specification.'
   contact:
+    name: Richard Willis
+    url: https://github.com/badsyntax
     email: willis.rh@gmail.com
   license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.0
+    name: MIT
+    url: https://badsyntax.mit-license.org/
+  version: '0.46.0'
 externalDocs:
   description: Find out more about Mail-in-a-box
   url: https://mailinabox.email/

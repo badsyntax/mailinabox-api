@@ -1,45 +1,55 @@
-## {{npmName}}@{{npmVersion}} FOO
+## {{npmName}}@{{npmVersion}}
 
-This generator creates TypeScript/JavaScript client that utilizes [Fetch API](https://fetch.spec.whatwg.org/). The generated Node module can be used in the following environments:
+![Build & Publish](https://github.com/badsyntax/mailinabox-api/workflows/Build%20&%20Publish/badge.svg)
 
-Environment
-* Node.js
-* Webpack
-* Browserify
+JavaScript/TypeScript client SDK for the Mail-in-a-Box API.
 
-Language level
-* ES5 - you must have a Promises/A+ library installed
-* ES6
+### Installing
 
-Module system
-* CommonJS
-* ES6 module system
-
-It can be used in both TypeScript and JavaScript. In TypeScript, the definition should be automatically resolved via `package.json`. ([Reference](http://www.typescriptlang.org/docs/handbook/typings-for-npm-packages.html))
-
-### Building
-
-To build and compile the typescript sources to javascript use:
-```
-npm install
-npm run build
+```js
+npm install {{npmName}} --save
 ```
 
-### Publishing
+### Usage
 
-First build the package then run ```npm publish```
+```ts
+import {
+  AliasesApi,
+  Configuration,
+  ConfigurationParameters,
+  DnsApi,
+  MailUsersResponseFormat,
+  SslApi,
+  SystemApi,
+  UserApi,
+  UsersApi,
+  WebApi,
+} from 'mailinabox-api';
 
-### Consuming
+const apiConfigParams: ConfigurationParameters = {
+  basePath: '/admin',
+  username: 'YOUR_USERNAME',
+  password: 'YOUR_PASSWORD'
+};
 
-navigate to the folder of your consuming project and run one of the following commands.
+const apiConfig = new Configuration(apiConfigParams);
 
-_published:_
+const aliasesApi = new AliasesApi(apiConfig);
+const userApi = new UserApi(apiConfig);
+const systemApi = new SystemApi(apiConfig);
+const sslApi = new SslApi(apiConfig);
+const dnsApi = new DnsApi(apiConfig);
+const usersApi = new UsersApi(apiConfig);
+const webApi = new WebApi(apiConfig);
 
+// example request
+const users = await usersApi.getMailUsers({
+  format: MailUsersResponseFormat.Json,
+});
 ```
-npm install {{npmName}}@{{npmVersion}} --save
-```
 
-_unPublished (not recommended):_
+## License
 
-```
-npm install PATH_TO_GENERATED_PACKAGE --save
+MIT License
+
+Copyright (c) 2020 Richard Willis

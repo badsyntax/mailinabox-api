@@ -1,8 +1,8 @@
 {
   "name": "mailinabox-api",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.0",
+  "description": "Client SDK's for the Mail-in-a-Box API",
+  "private": true,
   "scripts": {
     "build": "npm run generate:typescript-fetch",
     "postbuild": "npm i --prefix ./clients/typescript-fetch && npm run build --prefix ./clients/typescript-fetch",
@@ -13,8 +13,7 @@
     "lint": "prettier --check \"**/*.{md,yml,json}\"",
     "lint:fix": "prettier --write '**/*.{md,yml,json}'"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Richard Willis <willis.rh@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^1.0.15-4.3.1",

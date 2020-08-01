@@ -1,0 +1,49 @@
+name: Build & Publish
+on:
+  push:
+  release:
+    types: [published]
+
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node 12.18.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.18.x
+      - name: Install dependencies
+        run: |
+          npm install
+      - name: Validate
+        run: |
+          npm run validate
+  build-and-publish:
+    needs: [validate]
+    name: Publish
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'published'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node 12.18.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.18.x
+      - name: Install dependencies
+        run: |
+          npm install
+      - name: Build clients
+        run: |
+          npm run build
+      - name: Publish package
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          cd clients/typescript-fetch
+          tag=${GITHUB_REF#refs/tags/}
+          echo "Setting package version $tag"
+          npm --no-git-tag-version version "$tag"
+          echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
+          npm publish

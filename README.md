@@ -1,8 +1,18 @@
-# mailinabox-api
+# Mail-in-a-Box API
 
-Client SDK's for the Mail-in-a-Box API.
+![Build & Publish](https://github.com/badsyntax/mailinabox-api/workflows/Build%20&%20Publish/badge.svg)
+
+OpenAPI HTTP specification & client SDK's for the Mail-in-a-Box API.
 
 Currently only shipping `typescript-fetch` but feel free to create an issue if you'd like a client SDK in a different language.
+
+Note the specification is not complete and does not cover all endpoints, although I do plan on covering the entire API, stay tuned.
+
+### Swagger editor
+
+Use the swagger editor to explore the api:
+
+https://editor.swagger.io/?url=https://raw.githubusercontent.com/badsyntax/mailinabox-api/master/schema/mailinabox.yml
 
 ## Template changes
 
@@ -55,6 +65,7 @@ Prevent quotes added to text/plain POST body. This seems like a bug in the gener
 
 ## TODO
 
+- [ ] Add missing endpoints
 - [ ] Add error responses
 - [ ] Add response examples
 - [ ] Add schema descriptions

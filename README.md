@@ -6,11 +6,11 @@ OpenAPI HTTP specification & client SDK's for the Mail-in-a-Box API.
 
 Currently only shipping `typescript-fetch` but feel free to create an issue if you'd like a client SDK in a different language.
 
-Note the specification is not complete and does not cover all endpoints, although I do plan on covering the entire API, stay tuned.
-
 ## OpenAPI HTTP specification
 
 See: https://github.com/badsyntax/mailinabox-api/blob/master/schema/mailinabox.yml
+
+Note the specification is not complete and does not cover all endpoints, although I do plan on covering the entire API, stay tuned.
 
 ### Swagger editor
 

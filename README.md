@@ -20,9 +20,9 @@ https://editor.swagger.io/?url=https://raw.githubusercontent.com/badsyntax/maili
 
 https://www.npmjs.com/package/mailinabox-api
 
-#### Template changes
+<details><summary>Template changes</summary>
 
-##### Supporting oneOf response types
+## Supporting oneOf response types
 
 The [Response Body](https://swagger.io/docs/specification/describing-responses/#body) spec says:
 
@@ -50,7 +50,7 @@ The mailinabox API returns primitive data types (eg `boolean`) for `application/
          {{^returnTypeIsPrimitive}}
 ```
 
-##### Support posting text/(plain|html) bodies
+## Support posting text/(plain|html) bodies
 
 Prevent quotes added to text/plain POST body. This seems like a bug in the generator, see https://github.com/OpenAPITools/openapi-generator/issues/7083.
 
@@ -66,6 +66,8 @@ Prevent quotes added to text/plain POST body. This seems like a bug in the gener
             ? context.body
             : JSON.stringify(context.body);
 ```
+
+</details>
 
 ## TODO
 

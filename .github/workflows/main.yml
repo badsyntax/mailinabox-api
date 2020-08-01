@@ -22,7 +22,7 @@ jobs:
           npm run validate
   build-and-publish:
     needs: [validate]
-    name: Validate
+    name: Publish
     runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'published'
     steps:
@@ -47,4 +47,3 @@ jobs:
           npm --no-git-tag-version version "$tag"
           echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
           npm publish
-

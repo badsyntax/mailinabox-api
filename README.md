@@ -1,8 +1,12 @@
 # mailinabox-api
 
+Client SDK's for the Mail-in-a-Box API.
+
+Currently only shipping `typescript-fetch` but feel free to create an issue if you'd like a client SDK in a different language.
+
 ## Template changes
 
-### typescript-fetch
+### `typescript-fetch`
 
 #### Supporting oneOf response types
 
@@ -34,7 +38,7 @@ The mailinabox API returns primitive data types (eg `boolean`) for `application/
 
 #### Support posting text/(plain|html) bodies
 
-Prevent quotes added to text/plain POST body. This seems like a bug in the generator, see  https://github.com/OpenAPITools/openapi-generator/issues/7083.
+Prevent quotes added to text/plain POST body. This seems like a bug in the generator, see https://github.com/OpenAPITools/openapi-generator/issues/7083.
 
 ```diff
 --- a/templates/typescript-fetch/runtime.mustache
@@ -48,3 +52,13 @@ Prevent quotes added to text/plain POST body. This seems like a bug in the gener
             ? context.body
             : JSON.stringify(context.body);
 ```
+
+## TODO
+
+- [ ] Add error responses
+- [ ] Add response examples
+- [ ] Add schema descriptions
+
+## License
+
+See [LICENSE.md](./LICENSE.md).

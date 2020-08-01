@@ -72,8 +72,11 @@ Prevent quotes added to text/plain POST body. This seems like a bug in the gener
 ## TODO
 
 - [ ] Add missing endpoints
-- [ ] Add error responses
-- [ ] Add response examples
+- [x] Add error responses
+  - [x] 400 bad request
+  - [x] 403 forbidden
+  - [x] 5XX errors
+- [x] Add response examples
 - [ ] Add schema descriptions
 
 ## License

@@ -8,17 +8,21 @@ Currently only shipping `typescript-fetch` but feel free to create an issue if y
 
 Note the specification is not complete and does not cover all endpoints, although I do plan on covering the entire API, stay tuned.
 
-### Swagger editor
+## Swagger editor
 
 Use the swagger editor to explore the api:
 
 https://editor.swagger.io/?url=https://raw.githubusercontent.com/badsyntax/mailinabox-api/master/schema/mailinabox.yml
 
-## Template changes
+## Clients
 
 ### `typescript-fetch`
 
-#### Supporting oneOf response types
+https://www.npmjs.com/package/mailinabox-api
+
+#### Template changes
+
+##### Supporting oneOf response types
 
 The [Response Body](https://swagger.io/docs/specification/describing-responses/#body) spec says:
 
@@ -46,7 +50,7 @@ The mailinabox API returns primitive data types (eg `boolean`) for `application/
          {{^returnTypeIsPrimitive}}
 ```
 
-#### Support posting text/(plain|html) bodies
+##### Support posting text/(plain|html) bodies
 
 Prevent quotes added to text/plain POST body. This seems like a bug in the generator, see https://github.com/OpenAPITools/openapi-generator/issues/7083.
 

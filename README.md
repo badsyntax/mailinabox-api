@@ -1,5 +1,7 @@
 # mailinabox-api
 
+![Build & Publish](https://github.com/badsyntax/mailinabox-api/workflows/Build%20&%20Publish/badge.svg)
+
 Client SDK's for the Mail-in-a-Box API.
 
 Currently only shipping `typescript-fetch` but feel free to create an issue if you'd like a client SDK in a different language.

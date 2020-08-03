@@ -3,12 +3,11 @@ info:
   title: Mail-in-a-Box
   description: 'Mail-in-a-Box API HTTP specification.'
   contact:
-    name: Richard Willis
-    url: https://github.com/badsyntax
-    email: willis.rh@gmail.com
+    name: Mail-in-a-Box support
+    url: https://mailinabox.email/
   license:
-    name: MIT
-    url: https://badsyntax.mit-license.org/
+    name: CC0 1.0 Universal
+    url: https://creativecommons.org/publicdomain/zero/1.0/legalcode
   version: '0.46.0'
 externalDocs:
   description: Find out more about Mail-in-a-box
@@ -179,12 +178,6 @@ paths:
             text/html:
               schema:
                 type: string
-        5XX:
-          description: Server error
-          content:
-            text/html:
-              schema:
-                type: string
   /system/privacy:
     get:
       tags:
@@ -289,12 +282,6 @@ paths:
             text/html:
               schema:
                 type: string
-        5XX:
-          description: Server error
-          content:
-            text/html:
-              schema:
-                type: string
   /system/backup/status:
     get:
       tags:
@@ -395,12 +382,6 @@ paths:
             text/html:
               schema:
                 type: string
-        5XX:
-          description: Server error
-          content:
-            text/html:
-              schema:
-                type: string
   /ssl/status:
     get:
       tags:
@@ -459,12 +440,6 @@ paths:
             text/html:
               schema:
                 type: string
-        5XX:
-          description: Server error
-          content:
-            text/html:
-              schema:
-                type: string
   /ssl/install:
     post:
       tags:
@@ -497,12 +472,6 @@ paths:
             text/html:
               schema:
                 type: string
-        5XX:
-          description: Server error
-          content:
-            text/html:
-              schema:
-                type: string
   /ssl/provision:
     post:
       tags:
@@ -519,12 +488,6 @@ paths:
                 $ref: '#/components/schemas/SSLCertificatesProvisionResponse'
         403:
           description: Forbidden
-          content:
-            text/html:
-              schema:
-                type: string
-        5XX:
-          description: Server error
           content:
             text/html:
               schema:
@@ -575,12 +538,6 @@ paths:
                 example: Could not resolve the IP address of badhostname
         403:
           description: Forbidden
-          content:
-            text/html:
-              schema:
-                type: string
-        5XX:
-          description: Server error
           content:
             text/html:
               schema:
@@ -677,7 +634,7 @@ paths:
         200:
           description: Successful operation
           content:
-            text/html:
+            application/json:
               schema:
                 $ref: '#/components/schemas/DNSCustomRecordsResponse'
         403:
@@ -713,12 +670,6 @@ paths:
             text/html:
               schema:
                 type: string
-        5XX:
-          description: Server error
-          content:
-            text/html:
-              schema:
-                type: string
     put:
       tags:
         - DNS
@@ -742,12 +693,6 @@ paths:
                 example: "'badhostname' does not appear to be an IPv4 or IPv6 address"
         403:
           description: Forbidden
-          content:
-            text/html:
-              schema:
-                type: string
-        5XX:
-          description: Server error
           content:
             text/html:
               schema:
@@ -779,12 +724,6 @@ paths:
             text/html:
               schema:
                 type: string
-        5XX:
-          description: Server error
-          content:
-            text/html:
-              schema:
-                type: string
   /dns/custom/{domain}:
     parameters:
       - in: path
@@ -802,7 +741,7 @@ paths:
         200:
           description: Successful operation
           content:
-            text/html:
+            application/json:
               schema:
                 $ref: '#/components/schemas/DNSCustomRecordsResponse'
         403:
@@ -814,7 +753,7 @@ paths:
     post:
       tags:
         - DNS
-      description: Add a custom DNS record.
+      description: Add a custom DNS A record.
       operationId: addDnsCustomRecordForTypeA
       requestBody:
         $ref: '#/components/requestBodies/DNSCustomRecordRequest'
@@ -838,16 +777,10 @@ paths:
             text/html:
               schema:
                 type: string
-        5XX:
-          description: Server error
-          content:
-            text/html:
-              schema:
-                type: string
     put:
       tags:
         - DNS
-      description: Update a custom DNS record.
+      description: Update a custom DNS A record.
       operationId: updateDnsCustomRecordForTypeA
       requestBody:
         $ref: '#/components/requestBodies/DNSCustomRecordRequest'
@@ -871,16 +804,10 @@ paths:
             text/html:
               schema:
                 type: string
-        5XX:
-          description: Server error
-          content:
-            text/html:
-              schema:
-                type: string
     delete:
       tags:
         - DNS
-      description: Remove a custom DNS record.
+      description: Remove a custom DNS A record.
       operationId: removeDnsCustomRecordForTypeA
       requestBody:
         $ref: '#/components/requestBodies/DNSCustomRecordRequest'
@@ -904,12 +831,6 @@ paths:
             text/html:
               schema:
                 type: string
-        5XX:
-          description: Server error
-          content:
-            text/html:
-              schema:
-                type: string
   /dns/dump:
     get:
       tags:
@@ -923,18 +844,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DNSDumpResponse'
-              example: |
-                -
-                  - example1.com
-                  -
-                    - explanation: Required. Specifies the hostname (and priority) of the machine that handles @proxima-mail.com mail.
+              example:
+                - - example1.com
+                  - - explanation: Required. Specifies the hostname (and priority) of the machine that handles @proxima-mail.com mail.
                       qname: example1.com
                       rtype: MX
                       value: 10 box.example1.com.
-                -
-                  - example2.com
-                  -
-                    - explanation: Required. Specifies the hostname (and priority) of the machine that handles @proxima-mail.com mail.
+                - - example2.com
+                  - - explanation: Required. Specifies the hostname (and priority) of the machine that handles @proxima-mail.com mail.
                       qname: example2.com
                       rtype: MX
                       value: 10 box.example2.com.
@@ -1004,12 +921,6 @@ paths:
             text/html:
               schema:
                 type: string
-        5XX:
-          description: Server error
-          content:
-            text/html:
-              schema:
-                type: string
   /mail/users/remove:
     post:
       tags:
@@ -1038,12 +949,6 @@ paths:
                 example: That's not a user (invalid@example.com)
         403:
           description: Forbidden
-          content:
-            text/html:
-              schema:
-                type: string
-        5XX:
-          description: Server error
           content:
             text/html:
               schema:
@@ -1080,12 +985,6 @@ paths:
             text/html:
               schema:
                 type: string
-        5XX:
-          description: Server error
-          content:
-            text/html:
-              schema:
-                type: string
   /mail/users/privileges/remove:
     post:
       tags:
@@ -1118,12 +1017,6 @@ paths:
             text/html:
               schema:
                 type: string
-        5XX:
-          description: Server error
-          content:
-            text/html:
-              schema:
-                type: string
   /mail/users/password:
     post:
       tags:
@@ -1152,12 +1045,6 @@ paths:
                 example: Passwords must be at least eight characters
         403:
           description: Forbidden
-          content:
-            text/html:
-              schema:
-                type: string
-        5XX:
-          description: Server error
           content:
             text/html:
               schema:
@@ -1269,12 +1156,6 @@ paths:
             text/html:
               schema:
                 type: string
-        5XX:
-          description: Server error
-          content:
-            text/html:
-              schema:
-                type: string
   /mail/aliases/remove:
     post:
       tags:
@@ -1303,12 +1184,6 @@ paths:
                 example: That's not an alias (invalid@example)
         403:
           description: Forbidden
-          content:
-            text/html:
-              schema:
-                type: string
-        5XX:
-          description: Server error
           content:
             text/html:
               schema:
@@ -1349,12 +1224,6 @@ paths:
                 $ref: '#/components/schemas/WebUpdateResponse'
         403:
           description: Forbidden
-          content:
-            text/html:
-              schema:
-                type: string
-        5XX:
-          description: Server error
           content:
             text/html:
               schema:

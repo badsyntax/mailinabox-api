@@ -22,16 +22,41 @@ servers:
 security:
   - basicAuth: []
 tags:
-  - name: user
-    description: Endpoints related to users
-  - name: system
-    description: Endpoints related to system
+  - name: User
+    description: Endpoints related to user authentication.
+  - name: System
+    description: |
+      System operations, which include system status checks, new version checks
+      and reboot status.
+  - name: SSL
+    description: |
+      TLS (SSL) Certificates operations, which include checking certificate status
+      and installing custom certificates.
+  - name: DNS
+    description: |
+      DNS operations, which include adding custom records, adding a secondary nameserver and viewing all DNS records.
+  - name: Mail Users
+    description: |
+      Mail Users operations, which include getting all users and adding/updating/removing users.
+  - name: Mail Aliases
+    description: |
+      Mail Aliases operations, which include getting all aliases and adding/updating/removing aliases.
+  - name: Web
+    description: |
+      Static web hosting operations, which include getting domain information and updating domain root directories.
 paths:
   /me:
     get:
       tags:
-        - user
-      summary: Get user information
+        - User
+      description: |
+        Get user information, used for user authentication.
+
+        Authenticate a user by supplying the auth token as a base64 encoded string in
+        format `email:password` using basic authentication headers.
+
+        If successful, a long-lived `api_key` is returned which can be used for subsequent
+        requests to the API.
       operationId: getMe
       responses:
         200:
@@ -55,8 +80,9 @@ paths:
   /system/status:
     post:
       tags:
-        - system
-      summary: Retrieve system status
+        - System
+      description: |
+        Retrieve system status. Returns an array of statuses which can include headings.
       operationId: getSystemStatus
       responses:
         200:
@@ -65,6 +91,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SystemStatusResponse'
+              example:
+                - type: heading
+                  text: System
+                  extra: []
+                - type: warning
+                  text: This domain's DNSSEC DS record is not set
+                  extra:
+                    - monospace: false
+                      text: 'Digest Type: 2 / SHA-25'
         403:
           description: Forbidden
           content:
@@ -74,8 +109,14 @@ paths:
   /system/privacy:
     get:
       tags:
-        - system
-      summary: Retrieve new-version check status
+        - System
+      description: |
+        Retrieve new-version check status.
+
+        Response:
+
+          - `true`: Private, new-version checks will not be performed
+          - `false`: Not private, new-version checks will be performed
       operationId: getSystemPrivacyStatus
       responses:
         200:
@@ -92,8 +133,14 @@ paths:
                 type: string
     post:
       tags:
-        - system
-      summary: Update new-version check status
+        - System
+      description: |
+        Update new-version check status.
+
+        Request:
+
+          - `value: private`: Disable new version checks
+          - `value: off`: Enable new version checks
       operationId: updateSystemPrivacy
       requestBody:
         required: true
@@ -117,8 +164,14 @@ paths:
   /system/reboot:
     get:
       tags:
-        - system
-      summary: Retrieve reboot status
+        - System
+      description: |
+        Retrieve reboot status.
+
+        Response:
+
+          - `true`: A reboot is required
+          - `false`: A reboot is not required
       operationId: getSystemRebootStatus
       responses:
         200:
@@ -136,8 +189,11 @@ paths:
   /system/backup/status:
     get:
       tags:
-        - system
-      summary: Retrieve backup status
+        - System
+      description: |
+        Retrieve backup status.
+
+        If the list of backups is empty, this implies no backups have been made yet.
       operationId: getSystemBackupStatus
       responses:
         200:
@@ -155,8 +211,8 @@ paths:
   /system/backup/config:
     get:
       tags:
-        - system
-      summary: Retrieve backup config
+        - System
+      description: Retrieve backup config.
       operationId: getSystemBackupConfig
       responses:
         200:
@@ -173,8 +229,9 @@ paths:
                 type: string
     post:
       tags:
-        - system
-      summary: Update backup config
+        - System
+      description: |
+        Update backup config.
       operationId: updateSystemBackupConfig
       requestBody:
         required: true
@@ -182,6 +239,35 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/SystemBackupConfigUpdateRequest'
+            examples:
+              s3:
+                summary: S3 backup
+                value:
+                  target: s3://s3.eu-central-1.amazonaws.com/box-example-com
+                  targetUser: ACCESS_KEY
+                  targetPassword: SECRET_ACCESS_KEY
+                  minAge: 3
+              local:
+                summary: Local backup
+                value:
+                  target: local
+                  targetUser: ''
+                  targetPassword: ''
+                  minAge: 3
+              rsync:
+                summary: Rsync backup
+                value:
+                  target: rsync://username@box.example.com//backups/box.example.com
+                  targetUser: ''
+                  targetPassword: ''
+                  minAge: 3
+              off:
+                summary: Disable backups
+                value:
+                  target: 'off'
+                  targetUser: ''
+                  targetPassword: ''
+                  minAge: 0
       responses:
         200:
           description: Successful operation
@@ -204,8 +290,8 @@ paths:
   /ssl/status:
     get:
       tags:
-        - ssl
-      summary: Retrieve SSL status
+        - SSL
+      description: Retrieve SSL status for all domains.
       operationId: getSSLStatus
       responses:
         200:
@@ -223,8 +309,9 @@ paths:
   /ssl/csr/{domain}:
     post:
       tags:
-        - ssl
-      summary: Generate CSR for domain
+        - SSL
+      description: |
+        Generate a Certificate Signing Request (CSR) for a domain & country code.
       operationId: generateSSLCSR
       parameters:
         - in: path
@@ -261,8 +348,9 @@ paths:
   /ssl/install:
     post:
       tags:
-        - ssl
-      summary: Install custom certificate
+        - SSL
+      description: |
+        Install a custom certificate. The chain certificate is optional.
       operationId: installSSLCertificate
       requestBody:
         required: true
@@ -292,8 +380,8 @@ paths:
   /dns/secondary-nameserver:
     get:
       tags:
-        - dns
-      summary: Retrieve secondary nameserver
+        - DNS
+      description: Retrieve secondary nameservers.
       operationId: getDnsSecondaryNameserver
       responses:
         200:
@@ -310,8 +398,8 @@ paths:
                 type: string
     post:
       tags:
-        - dns
-      summary: Add a secondary nameserver
+        - DNS
+      description: Add secondary nameservers.
       operationId: addDnsSecondaryNameserver
       requestBody:
         required: true
@@ -348,8 +436,8 @@ paths:
   /dns/zones:
     get:
       tags:
-        - dns
-      summary: Retrieve DNS zones
+        - DNS
+      description: Retrieve DNS zones.
       operationId: getDnsZones
       responses:
         200:
@@ -367,8 +455,8 @@ paths:
   /dns/custom:
     get:
       tags:
-        - dns
-      summary: Retrieve custom DNS records
+        - DNS
+      description: Retrieve custom DNS records.
       operationId: getDnsCustomRecords
       responses:
         200:
@@ -399,8 +487,8 @@ paths:
         description: Record type
     post:
       tags:
-        - dns
-      summary: Add a custom DNS record
+        - DNS
+      description: Add a custom DNS record.
       operationId: addDnsCustomRecord
       requestBody:
         $ref: '#/components/requestBodies/DNSCustomRecordRequest'
@@ -432,8 +520,8 @@ paths:
                 type: string
     delete:
       tags:
-        - dns
-      summary: Remove a custom DNS record
+        - DNS
+      description: Remove a custom DNS record.
       operationId: removeDnsCustomRecord
       requestBody:
         $ref: '#/components/requestBodies/DNSCustomRecordRequest'
@@ -466,8 +554,8 @@ paths:
   /dns/dump:
     get:
       tags:
-        - dns
-      summary: Retrieve all DNS records
+        - DNS
+      description: Retrieve all DNS records.
       operationId: getDnsDump
       responses:
         200:
@@ -476,6 +564,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DNSDumpResponse'
+              example: |
+                -
+                  - example1.com
+                  -
+                    - explanation: Required. Specifies the hostname (and priority) of the machine that handles @proxima-mail.com mail.
+                      qname: example1.com
+                      rtype: MX
+                      value: 10 box.example1.com.
+                -
+                  - example2.com
+                  -
+                    - explanation: Required. Specifies the hostname (and priority) of the machine that handles @proxima-mail.com mail.
+                      qname: example2.com
+                      rtype: MX
+                      value: 10 box.example2.com.
         403:
           description: Forbidden
           content:
@@ -485,8 +588,8 @@ paths:
   /mail/users:
     get:
       tags:
-        - users
-      summary: Retrieve all mail users
+        - Mail Users
+      description: Retrieve all mail users.
       operationId: getMailUsers
       parameters:
         - in: query
@@ -513,8 +616,8 @@ paths:
   /mail/users/add:
     post:
       tags:
-        - users
-      summary: Add a new mail user
+        - Mail Users
+      description: Add a new mail user.
       operationId: addMailUser
       requestBody:
         required: true
@@ -551,8 +654,8 @@ paths:
   /mail/users/remove:
     post:
       tags:
-        - users
-      summary: Remove a mail user
+        - Mail Users
+      description: Remove a mail user.
       operationId: removeMailUser
       requestBody:
         required: true
@@ -589,22 +692,22 @@ paths:
   /mail/users/privileges/add:
     post:
       tags:
-        - users
-      summary: Add a privilege to a mail user
+        - Mail Users
+      description: Add a privilege to a mail user.
       operationId: addMailUserPrivilege
       requestBody:
         required: true
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/MailUserAddAdminPrivilegeRequest'
+              $ref: '#/components/schemas/MailUserAddPrivilegeRequest'
       responses:
         200:
           description: Successful operation
           content:
             text/html:
               schema:
-                $ref: '#/components/schemas/MailUserAddAdminPrivilegeResponse'
+                $ref: '#/components/schemas/MailUserAddPrivilegeResponse'
         400:
           description: Bad request
           content:
@@ -627,22 +730,22 @@ paths:
   /mail/users/privileges/remove:
     post:
       tags:
-        - users
-      summary: Remove a privilege from a mail user
+        - Mail Users
+      description: Remove a privilege from a mail user.
       operationId: removeMailUserPrivilege
       requestBody:
         required: true
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/MailUserRemoveAdminPrivilegeRequest'
+              $ref: '#/components/schemas/MailUserRemovePrivilegeRequest'
       responses:
         200:
           description: Successful operation
           content:
             text/html:
               schema:
-                $ref: '#/components/schemas/MailUserRemoveAdminPrivilegeResponse'
+                $ref: '#/components/schemas/MailUserRemovePrivilegeResponse'
         400:
           description: Bad request
           content:
@@ -665,8 +768,8 @@ paths:
   /mail/users/password:
     post:
       tags:
-        - users
-      summary: Set a password for a user
+        - Mail Users
+      description: Set a password for a user.
       operationId: setMailUserPassword
       requestBody:
         required: true
@@ -703,8 +806,8 @@ paths:
   /mail/aliases:
     get:
       tags:
-        - aliases
-      summary: Retrieve all aliases
+        - Mail Aliases
+      description: Retrieve all mail aliases.
       operationId: getMailAliases
       parameters:
         - in: query
@@ -733,8 +836,9 @@ paths:
   /mail/aliases/add:
     post:
       tags:
-        - aliases
-      summary: Add or update mail alias
+        - Mail Aliases
+      description: |
+        Add or update a mail alias. If updating, you need to set `update_if_exists: 1`.
       operationId: upsertMailAlias
       requestBody:
         required: true
@@ -771,8 +875,8 @@ paths:
   /mail/aliases/remove:
     post:
       tags:
-        - aliases
-      summary: Remove a mail alias
+        - Mail Aliases
+      description: Remove a mail alias.
       operationId: removeMailAlias
       requestBody:
         required: true
@@ -809,8 +913,8 @@ paths:
   /web/domains:
     get:
       tags:
-        - web
-      summary: Retrieve all static web domains
+        - Web
+      description: Retrieve all static web domains.
       operationId: getWebDomains
       responses:
         200:
@@ -830,8 +934,8 @@ paths:
   /web/update:
     post:
       tags:
-        - web
-      summary: Update static websites
+        - Web
+      description: Update static websites, used for updating domain root directories.
       operationId: updateWeb
       responses:
         200:
@@ -851,6 +955,10 @@ components:
     basicAuth:
       type: http
       scheme: basic
+      description: |
+        Credentials can be supplied using the `Authorization` header in format `Authorization: Basic {access-token}`.
+        The `access-token` is comprised of the Base64 encoding of `username:password`. The `password` can either be
+        the users password, or the `api_key` returned from the `getMe` operation.
   requestBodies:
     DNSCustomRecordRequest:
       description: The value of the DNS record
@@ -859,6 +967,8 @@ components:
         text/plain:
           schema:
             type: string
+            example: 1.2.3.4
+            description: The value of the DNS record
   schemas:
     MailUsersResponseFormat:
       type: string
@@ -866,45 +976,55 @@ components:
         - text
         - json
       example: json
-      description: Response format
+      description: Response format (`application/json` or `text/html`).
     MailAliasesResponseFormat:
       type: string
       enum:
         - text
         - json
       example: json
-      description: Response format
+      description: Response format (`application/json` or `text/html`).
     MailUserSetPasswordResponse:
       type: string
       example: OK
+      description: Mail user set password response.
     MailUserRemoveResponse:
       type: string
       example: OK
+      description: Mail user remove response.
     MailUserAddResponse:
       type: string
       example: |
         mail user added
         updated DNS: OpenDKIM configuration
-    MailUserAddAdminPrivilegeResponse:
+      description: |
+        Mail user add response.
+
+        Can include information about operations related to adding new users, like updating DNS.
+    MailUserAddPrivilegeResponse:
       type: string
       example: OK
-    MailUserRemoveAdminPrivilegeResponse:
+      description: Mail user add admin privilege response.
+    MailUserRemovePrivilegeResponse:
       type: string
       example: OK
+      description: Mail user remove admin privilege response.
     MailUsersSimpleResponse:
       type: string
       example: |
         email1@example.com
         email2@example.com
+      description: Get mail users text format response.
     MailUsersResponse:
       type: array
       items:
         $ref: '#/components/schemas/MailUserByDomain'
+      description: Get mail aliases JSON format response.
     MailUserByDomain:
       type: object
       required:
         - domain
-        - users
+        - Mail Users
       properties:
         domain:
           $ref: '#/components/schemas/Hostname'
@@ -912,6 +1032,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/MailUser'
+      description: Mail users by domain.
     MailUser:
       type: object
       required:
@@ -930,11 +1051,13 @@ components:
         mailbox:
           type: string
           example: /home/user-data/mail/mailboxes/example.com/user
+      description: Mail user details.
     MailAliasesSimpleResponse:
       type: string
       example: |
         abuse@example.com	administrator@example.com
         admin@example.com	administrator@example.com
+      description: Get mail aliases text format response.
     MailAliasByDomain:
       type: object
       required:
@@ -947,6 +1070,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/MailAlias'
+      description: Mail aliases by domain.
     MailAlias:
       type: object
       required:
@@ -963,20 +1087,20 @@ components:
         forwards_to:
           type: array
           items:
-            $ref: '#/components/schemas/MailAddress'
+            $ref: '#/components/schemas/Email'
         permitted_senders:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/MailAddress'
+            $ref: '#/components/schemas/Email'
         required:
           type: boolean
           example: true
-    MailAddress:
-      $ref: '#/components/schemas/Email'
+      description: Mail alias details.
     MailAliasUpsertResponse:
       type: string
       example: alias updated
+      description: Mail alias add/update response.
     MailAliasUpsertRequest:
       type: object
       required:
@@ -991,19 +1115,31 @@ components:
           minimum: 0
           maximum: 1
           example: 1
+          description: Set to `1` when updating an alias.
         address:
-          type: string
-          example: user@example.com
+          $ref: '#/components/schemas/Email'
         forwards_to:
           type: string
           example: email1@example.com, example2@example.com
+          description: |
+            If adding a regular or catch-all alias, the format needs to be `email1@example.com`.
+            Multiple address can be separated by newlines or commas.
+
+            If adding a domain alias, the format needs to be `@example.com`.
         permitted_senders:
           type: string
           nullable: true
           example: email1@example.com, example2@example.com
+          description: |
+            Mail users that can send mail claiming to be from any address on the alias domain.
+            Multiple address can be separated by newlines or commas.
+
+            Leave empty to allow any mail user listed in `forwards_to` to send mail claiming to be from any address on the alias domain.
+      description: Mail alias upsert request.
     MailAliasRemoveResponse:
       type: string
       example: alias removed
+      description: Mail alias remove response.
     MailAliasRemoveRequest:
       type: object
       required:
@@ -1011,6 +1147,7 @@ components:
       properties:
         address:
           $ref: '#/components/schemas/Email'
+      description: Mail aliases remove request.
     DNSRecordType:
       enum:
         - A
@@ -1023,20 +1160,27 @@ components:
         - SSHFP
         - NS
       example: MX
+      description: DNS record type.
     DNSDumpResponse:
       type: array
       items:
         $ref: '#/components/schemas/DNSDumpDomains'
+      description: DNS dump response.
     DNSDumpDomains:
       type: array
       items:
         oneOf:
           - $ref: '#/components/schemas/Hostname'
           - $ref: '#/components/schemas/DNSDumpDomainRecords'
+      description: |
+        A list of records per domain.
+
+        The first item in the list is the domain and the second item is the list of records.
     DNSDumpDomainRecords:
       type: array
       items:
         $ref: '#/components/schemas/DNSDumpDomainRecord'
+      description: List of domain records.
     DNSDumpDomainRecord:
       type: object
       required:
@@ -1055,6 +1199,7 @@ components:
         value:
           type: string
           example: 10 example.com.
+      description: Domain DNS record details.
     DNSCustomRecord:
       type: object
       required:
@@ -1069,14 +1214,17 @@ components:
         value:
           type: string
           example: 10 example.com.
+      description: Custom DNS record detail detail.
     DNSCustomResponse:
       type: array
       items:
         $ref: '#/components/schemas/DNSCustomRecord'
+      description: Custom DNS records response.
     DNSZonesResponse:
       type: array
       items:
         $ref: '#/components/schemas/Hostname'
+      description: DNS zones response.
     DNSSecondaryNameserverResponse:
       type: object
       required:
@@ -1087,12 +1235,15 @@ components:
           items:
             type: string
             example: ns1.example.com
+      description: Secondary nameserver/s response.
     DNSCustomRecordRemoveResponse:
       type: string
       example: 'updated DNS: example.com'
+      description: Custom DNS record remove response.
     DNSCustomRecordAddResponse:
       type: string
       example: 'updated DNS: example.com'
+      description: Custom DNS record add response.
     DNSSecondaryNameserverAddRequest:
       type: object
       required:
@@ -1102,9 +1253,11 @@ components:
           type: string
           description: Hostnames separated with commas or spaces
           example: ns2.hostingcompany.com, ns3.hostingcompany.com
+      description: Secondary nameserver/s add request.
     DNSSecondaryNameserverAddResponse:
       type: string
       example: 'updated DNS: example.com'
+      description: Secondary nameserver/s add response.
     SystemPrivacyUpdateRequest:
       type: object
       required:
@@ -1112,12 +1265,14 @@ components:
       properties:
         value:
           $ref: '#/components/schemas/SystemPrivacyStatus'
+      description: Update system privacy request.
     SystemPrivacyStatus:
       type: string
       enum:
         - private
         - 'off'
       example: private
+      description: System privacy status.
     MailUserSetPasswordRequest:
       type: object
       required:
@@ -1128,6 +1283,7 @@ components:
           $ref: '#/components/schemas/Email'
         password:
           type: string
+      description: Mail user set password request.
     MailUserAddRequest:
       type: object
       required:
@@ -1141,6 +1297,7 @@ components:
           type: string
         privileges:
           $ref: '#/components/schemas/MailUserPrivilege'
+      description: Mail user add request.
     MailUserRemoveRequest:
       type: object
       required:
@@ -1148,19 +1305,22 @@ components:
       properties:
         email:
           $ref: '#/components/schemas/Email'
+      description: Mail user remove request.
     MailUserStatus:
       type: string
       enum:
         - active
         - inactive
       example: active
+      description: Mail user status.
     MailUserPrivilege:
       type: string
       enum:
         - admin
         - ''
       example: admin
-    MailUserAddAdminPrivilegeRequest:
+      description: Mail user privilege.
+    MailUserAddPrivilegeRequest:
       type: object
       required:
         - email
@@ -1170,7 +1330,8 @@ components:
           $ref: '#/components/schemas/Email'
         privilege:
           $ref: '#/components/schemas/MailUserPrivilege'
-    MailUserRemoveAdminPrivilegeRequest:
+      description: Mail user add privilege request.
+    MailUserRemovePrivilegeRequest:
       type: object
       required:
         - email
@@ -1180,6 +1341,7 @@ components:
           $ref: '#/components/schemas/Email'
         privilege:
           $ref: '#/components/schemas/MailUserPrivilege'
+      description: Mail user remove privilege request.
     SSLCSRGenerateRequest:
       type: object
       required:
@@ -1188,6 +1350,7 @@ components:
         countrycode:
           type: string
           example: GB
+      description: Generate SSL CSR request.
     SSLCSRGenerateResponse:
       type: string
       example: |
@@ -1206,6 +1369,7 @@ components:
         lWcK59kvRJkCcPhPzjpUy9NulucH4WFA/WqKeDNFS/oC+upV5w8EDEcfnenJFG+N
         JmFDQESSfUxLPHLC660Wnf3GmrP/duZHpPC+qTe8b1AlQ7zDT3cOaAQ+Mb0=
         -----END CERTIFICATE REQUEST-----
+      description: Generate SSL CSR response.
     SSLCertificateInstallRequest:
       type: object
       required:
@@ -1253,30 +1417,36 @@ components:
             lWcK59kvRJkCcPhPzjpUy9NulucH4WFA/WqKeDNFS/oC+upV5w8EDEcfnenJFG+N
             JmFDQESSfUxLPHLC660Wnf3GmrP/duZHpPC+qTe8b1AlQ7zDT3cOaAQ+Mb0=
             -----END CERTIFICATE-----
+      description: Install certificate request. `chain` can be an empty string.
     SSLCertificateInstallResponse:
       type: string
       example: OK
+      description: Install certificate response.
     SystemPrivacyStatusResponse:
       type: boolean
       description: |
-        Response:
-        * `true`: Private, new-version checks will not be performed
-        * `false`: Not private, new-version checks will be performed
+        System privacy status response.
+
+          - `true`: Private, new-version checks will not be performed
+          - `false`: Not private, new-version checks will be performed
       example: false
     SystemPrivacyUpdateResponse:
       type: string
       example: OK
+      description: System privacy update response.
     SystemRebootStatusResponse:
       type: boolean
       description: |
-        Response:
-        * `true`: A reboot is required
-        * `false`: A reboot is not required
+        System reboot status response.
+
+          - `true`: A reboot is required
+          - `false`: A reboot is not required
       example: true
     SystemStatusResponse:
       type: array
       items:
         $ref: '#/components/schemas/StatusEntry'
+      description: System status response.
     StatusEntry:
       type: object
       required:
@@ -1293,6 +1463,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/StatusEntryExtra'
+      description: System status entry.
     StatusEntryType:
       type: string
       enum:
@@ -1301,6 +1472,7 @@ components:
         - warning
         - error
       example: warning
+      description: System status entry type.
     StatusEntryExtra:
       type: object
       required:
@@ -1313,6 +1485,7 @@ components:
         text:
           type: string
           example: 'Digest Type: 2 / SHA-256'
+      description: System entry extra information.
     SystemBackupConfigUpdateRequest:
       type: object
       required:
@@ -1336,9 +1509,11 @@ components:
           format: int32
           minimum: 1
           example: 3
+      description: Backup config update request.
     SystemBackupConfigUpdateResponse:
       type: string
       example: OK
+      description: Backup config update response.
     SystemBackupConfigResponse:
       type: object
       required:
@@ -1370,6 +1545,7 @@ components:
           type: string
         target_pass:
           type: string
+      description: Backup config response.
     SystemBackupStatusResponse:
       type: object
       required:
@@ -1386,6 +1562,7 @@ components:
         error:
           type: string
           example: Something is wrong with the backup
+      description: Backup status response. Lists the status for all backups.
     SystemBackupStatus:
       type: object
       required:
@@ -1420,6 +1597,7 @@ components:
           type: integer
           format: int32
           example: 1
+      description: Backup status details.
     SSLStatusResponse:
       type: object
       required:
@@ -1434,6 +1612,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SSLStatus'
+      description: SSL status response for all relevant domains.
     SSLStatus:
       type: object
       required:
@@ -1448,6 +1627,7 @@ components:
         text:
           type: string
           example: Signed & valid. The certificate expires in 87 days on 10/28/20.
+      description: SSL status details for domain.
     SSLStatusType:
       type: string
       enum:
@@ -1455,14 +1635,17 @@ components:
         - danger
         - not-applicable
       example: success
+      description: SSL status type.
     Email:
       type: string
       format: email
       example: user@example.com
+      description: Email format.
     Hostname:
       type: string
       format: hostname
       example: example.com
+      description: Hostname format.
     MeResponse:
       type: object
       required:
@@ -1482,12 +1665,14 @@ components:
           example: Incorrect username or password
         status:
           $ref: '#/components/schemas/MeAuthStatus'
+      description: Me (user) response.
     MeAuthStatus:
       type: string
       enum:
         - ok
         - invalid
       example: invalid
+      description: Me (user) authentication result.
     WebDomain:
       type: object
       required:
@@ -1522,6 +1707,8 @@ components:
         static_enabled:
           type: boolean
           example: true
+      description: Web domain details.
     WebUpdateResponse:
       type: string
       example: web updated
+      description: Web update response.

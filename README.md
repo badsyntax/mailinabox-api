@@ -73,17 +73,6 @@ Prevent quotes added to text/plain POST body. This seems like a bug in the gener
 
 </details>
 
-## TODO
-
-- [ ] Add missing endpoints
-- [x] Add error responses
-  - [x] 400 bad request
-  - [x] 403 forbidden
-  - [x] 5XX errors
-- [x] Add response examples
-- [ ] Update tag descriptions
-- [ ] Add schema descriptions
-
 ## License
 
 See [LICENSE.md](./LICENSE.md).

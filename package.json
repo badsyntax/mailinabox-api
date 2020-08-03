@@ -8,7 +8,7 @@
     "postgenerate:typescript-fetch": "npm i --prefix ./clients/typescript-fetch && npm run build --prefix ./clients/typescript-fetch",
     "generate": "openapi-generator generate -i schema/mailinabox.yml ",
     "generate:typescript-fetch": "TS_POST_PROCESS_FILE='./node_modules/.bin/prettier --write --config ./.prettierrc.ts.json' npm run generate -- -g typescript-fetch -t templates/typescript-fetch -o clients/typescript-fetch --additional-properties=typescriptThreePlus=true,npmName=mailinabox-api,enablePostProcessFile=true --generate-alias-as-model",
-    "generate:php": "PHP_POST_PROCESS_FILE='./node_modules/.bin/prettier --write --config ./.prettierrc.php.json' npm run generate -- -g php -o clients/php --additional-properties=enablePostProcessFile=true --generate-alias-as-model",
+    "generate:php": "PHP_POST_PROCESS_FILE='./node_modules/.bin/prettier --write --config ./.prettierrc.php.json' npm run generate -- -g php -o clients/php --additional-properties='enablePostProcessFile=true,packageName=MailInABoxAPI,invokerPackage=MailInABoxAPI\\Client,variableNamingConvention=camelCase' --generate-alias-as-model",
     "validate": "openapi-generator validate -i schema/mailinabox.yml",
     "prevalidate": "npm run lint",
     "lint": "prettier --check \"**/*.{md,yml,json}\" --ignore-path ./.prettierignore.main",

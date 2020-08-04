@@ -4,11 +4,8 @@
   "description": "Client SDK's for the Mail-in-a-Box API",
   "private": true,
   "scripts": {
-    "build": "npm run generate:typescript-fetch && npm run generate:php",
-    "postgenerate:typescript-fetch": "npm i --prefix ./clients/typescript-fetch && npm run build --prefix ./clients/typescript-fetch",
-    "generate": "openapi-generator generate -i schema/mailinabox.yml ",
-    "generate:typescript-fetch": "TS_POST_PROCESS_FILE='./node_modules/.bin/prettier --write --config ./.prettierrc.ts.json' npm run generate -- -g typescript-fetch -t templates/typescript-fetch -o clients/typescript-fetch --additional-properties=typescriptThreePlus=true,npmName=mailinabox-api,enablePostProcessFile=true --generate-alias-as-model",
-    "generate:php": "./generate-php.sh",
+    "generate:typescript-fetch": "scripts/generate-ts.sh",
+    "generate:php": "scripts/generate-php.sh",
     "validate": "openapi-generator validate -i schema/mailinabox.yml",
     "prevalidate": "npm run lint",
     "lint": "prettier --check \"**/*.{md,yml,json}\" --ignore-path ./.prettierignore.main",

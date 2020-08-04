@@ -15,3 +15,6 @@ $(npm bin)/openapi-generator generate \
   --git-user-id=badsyntax \
   --git-repo-id=mailinabox-api-ts \
   --git-host=github.com
+
+# generate a package-lock.json
+npm i --prefix "$CLIENT_PATH"

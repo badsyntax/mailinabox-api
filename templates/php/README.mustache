@@ -1,12 +1,8 @@
 # {{packageName}}
 
-{{#appDescriptionWithNewLines}}
-{{{appDescriptionWithNewLines}}}
-{{/appDescriptionWithNewLines}}
+[![Build & Publish](https://github.com/badsyntax/mailinabox-api/workflows/Build%20&%20Publish/badge.svg)](https://github.com/badsyntax/mailinabox-api/actions?query=workflow%3A%22Build+%26+Publish%22)
 
-{{#infoUrl}}
-For more information, please visit [{{{infoUrl}}}]({{{infoUrl}}})
-{{/infoUrl}}
+PHP client SDK for the Mail-in-a-Box API.
 
 - API version: {{appVersion}}
 {{#artifactVersion}}
@@ -15,6 +11,8 @@ For more information, please visit [{{{infoUrl}}}]({{{infoUrl}}})
 {{^hideGenerationTimestamp}}
 - Build date: {{generatedDate}}
 {{/hideGenerationTimestamp}}
+
+**NOTE:** This package is [auto-generated](https://github.com/badsyntax/mailinabox-api) from the Mail-In-A-Box OpenAPI spec.
 
 ## Requirements
 
@@ -28,14 +26,8 @@ To install the bindings via [Composer](http://getcomposer.org/), add the followi
 
 ```json
 {
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://{{gitHost}}/{{gitUserId}}/{{gitRepoId}}.git"
-    }
-  ],
   "require": {
-    "{{gitUserId}}/{{gitRepoId}}": "*@dev"
+    "{{artifactId}}": "{{artifactVersion}}"
   }
 }
 ```
@@ -47,7 +39,7 @@ Then run `composer install`
 Download the files and include `autoload.php`:
 
 ```php
-    require_once('/path/to/{{packageName}}/vendor/autoload.php');
+    require_once('/path/to/{{gitRepoId}}/vendor/autoload.php');
 ```
 
 ## Tests
@@ -142,7 +134,8 @@ All endpoints do not require authorization.
 
 {{/authMethods}}
 
-## Author
+## License
 
-{{#apiInfo}}{{#apis}}{{^hasMore}}{{infoEmail}}
-{{/hasMore}}{{/apis}}{{/apiInfo}}
+MIT License
+
+Copyright (c) 2020 Richard Willis

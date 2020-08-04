@@ -20,9 +20,9 @@ jobs:
       - name: Validate
         run: |
           npm run validate
-  build-and-publish:
+  build-and-publish-typescript-fetch:
     needs: [validate]
-    name: Publish
+    name: Build and publish typescript-fetch
     runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'published'
     steps:
@@ -34,10 +34,10 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
-      - name: Build clients
+      - name: Build typescript-fetch client
         run: |
-          npm run build
-      - name: Publish package
+          npm run generate:typescript-fetch
+      - name: Publish typescript-fetch package
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
@@ -47,3 +47,36 @@ jobs:
           npm --no-git-tag-version version "$tag"
           echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
           npm publish
+  build-and-publish-php:
+    needs: [validate]
+    name: Build and publish php
+    runs-on: ubuntu-latest
+    # if: github.event_name == 'release' && github.event.action == 'published'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node 12.18.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.18.x
+      - name: Install dependencies
+        run: |
+          npm install
+      - name: Checkout package source
+        uses: actions/checkout@v2
+        with:
+          repository: badsyntax/mailinabox-api-php
+          path: clients/php
+      - name: Build php client
+        run: |
+          npm run generate:php
+      - name: Push changes to package source
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          tag=${GITHUB_REF#refs/tags/}
+          cd clients/php
+          git add .
+          git commit -m "Generated code for version $tag"
+          # git push
+      # - name: Publish php package
+      #   run: |

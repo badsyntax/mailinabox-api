@@ -16,5 +16,5 @@ $(npm bin)/openapi-generator generate \
   --git-user-id=badsyntax \
   --git-repo-id=mailinabox-api-php \
   --git-host=github.com \
-  --artifact-id=badsyntax/mailinabox-api \
+  --artifact-id=mailinabox/mailinabox-api \
   --artifact-version="$PACKAGE_VERSION" \

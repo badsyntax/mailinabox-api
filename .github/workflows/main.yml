@@ -108,6 +108,7 @@ jobs:
     # if: github.event_name == 'release' && github.event.action == 'published'
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
       - name: Install dependencies
         run: |
           npm install
@@ -127,6 +128,7 @@ jobs:
         run: |
           tag=${GITHUB_REF#refs/tags/}
           tag=0.0.0-SNAPSHOT.5
+          pip install black
           PACKAGE_VERSION="$tag" npm run generate:python
       - name: Push changes to package source
         run: |

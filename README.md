@@ -70,6 +70,11 @@ Prevent quotes added to text/plain POST body. This seems like a bug in the gener
 - https://github.com/badsyntax/mailinabox-api-php
 - https://packagist.org/packages/mailinabox/mailinabox-api
 
+### python
+
+- https://github.com/badsyntax/mailinabox-api-py
+- https://pypi.org/project/mailinabox-api
+
 ## License
 
 See [LICENSE.md](./LICENSE.md).

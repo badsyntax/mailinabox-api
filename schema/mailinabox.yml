@@ -1,23 +1,24 @@
 openapi: 3.0.3
 info:
   title: Mail-in-a-Box
-  description: 'Mail-in-a-Box API HTTP specification.'
+  description: Mail-in-a-Box API HTTP specification.
   contact:
     name: Mail-in-a-Box support
     url: https://mailinabox.email/
+    email: contact@mailinabox.email
   license:
     name: CC0 1.0 Universal
     url: https://creativecommons.org/publicdomain/zero/1.0/legalcode
   version: '0.46.0'
 externalDocs:
-  description: Find out more about Mail-in-a-box
+  description: Find out more about Mail-in-a-box.
   url: https://mailinabox.email/
 servers:
   - url: https://{host}/admin
     variables:
       host:
         default: box.example.com
-        description: The API hostname
+        description: The API hostname.
 security:
   - basicAuth: []
 tags:
@@ -339,29 +340,29 @@ paths:
                 summary: S3 backup
                 value:
                   target: s3://s3.eu-central-1.amazonaws.com/box-example-com
-                  targetUser: ACCESS_KEY
-                  targetPassword: SECRET_ACCESS_KEY
+                  target_user: ACCESS_KEY
+                  target_pass: SECRET_ACCESS_KEY
                   minAge: 3
               local:
                 summary: Local backup
                 value:
                   target: local
-                  targetUser: ''
-                  targetPassword: ''
+                  target_user: ''
+                  target_pass: ''
                   minAge: 3
               rsync:
                 summary: Rsync backup
                 value:
                   target: rsync://username@box.example.com//backups/box.example.com
-                  targetUser: ''
-                  targetPassword: ''
+                  target_user: ''
+                  target_pass: ''
                   minAge: 3
               off:
                 summary: Disable backups
                 value:
                   target: 'off'
-                  targetUser: ''
-                  targetPassword: ''
+                  target_user: ''
+                  target_pass: ''
                   minAge: 0
       responses:
         200:
@@ -414,7 +415,7 @@ paths:
           schema:
             $ref: '#/components/schemas/Hostname'
           required: true
-          description: Domain to generate CSR for
+          description: Domain to generate CSR for.
       requestBody:
         required: true
         content:
@@ -628,7 +629,7 @@ paths:
     get:
       tags:
         - DNS
-      description: Get DNS records for domain and type
+      description: Get DNS records for domain and type.
       operationId: getDnsCustomRecordsForDomainAndType
       responses:
         200:
@@ -731,11 +732,11 @@ paths:
         schema:
           $ref: '#/components/schemas/Hostname'
         required: true
-        description: DNS record domain
+        description: DNS record domain.
     get:
       tags:
         - DNS
-      description: Get DNS A records for domain
+      description: Get DNS A records for domain.
       operationId: getDnsCustomRecordsForDomainAndTypeA
       responses:
         200:
@@ -846,12 +847,12 @@ paths:
                 $ref: '#/components/schemas/DNSDumpResponse'
               example:
                 - - example1.com
-                  - - explanation: Required. Specifies the hostname (and priority) of the machine that handles @proxima-mail.com mail.
+                  - - explanation: Required. Specifies the hostname (and priority) of the machine that handles @example.com mail.
                       qname: example1.com
                       rtype: MX
                       value: 10 box.example1.com.
                 - - example2.com
-                  - - explanation: Required. Specifies the hostname (and priority) of the machine that handles @proxima-mail.com mail.
+                  - - explanation: Required. Specifies the hostname (and priority) of the machine that handles @example.com mail.
                       qname: example2.com
                       rtype: MX
                       value: 10 box.example2.com.
@@ -872,7 +873,7 @@ paths:
           name: format
           schema:
             $ref: '#/components/schemas/MailUsersResponseFormat'
-          description: The format of the response
+          description: The format of the response.
       responses:
         200:
           description: Successful operation
@@ -1104,7 +1105,7 @@ paths:
           name: format
           schema:
             $ref: '#/components/schemas/MailAliasesResponseFormat'
-          description: The format of the response
+          description: The format of the response.
       responses:
         200:
           description: Successful operation
@@ -1239,14 +1240,14 @@ components:
         the users password, or the `api_key` returned from the `getMe` operation.
   requestBodies:
     DNSCustomRecordRequest:
-      description: The value of the DNS record
+      description: The value of the DNS record.
       required: true
       content:
         text/plain:
           schema:
             type: string
             example: 1.2.3.4
-            description: The value of the DNS record
+            description: The value of the DNS record.
   schemas:
     MailUsersResponseFormat:
       type: string
@@ -1557,7 +1558,7 @@ components:
       properties:
         hostnames:
           type: string
-          description: Hostnames separated with commas or spaces
+          description: Hostnames separated with commas or spaces.
           example: ns2.hostingcompany.com, ns3.hostingcompany.com
       description: Secondary nameserver/s add request.
     DNSSecondaryNameserverAddResponse:
@@ -1589,6 +1590,7 @@ components:
           $ref: '#/components/schemas/Email'
         password:
           type: string
+          format: password
       description: Mail user set password request.
     MailUserAddRequest:
       type: object
@@ -1601,6 +1603,7 @@ components:
           $ref: '#/components/schemas/Email'
         password:
           type: string
+          format: password
         privileges:
           $ref: '#/components/schemas/MailUserPrivilege'
       description: Mail user add request.
@@ -1687,7 +1690,7 @@ components:
           $ref: '#/components/schemas/Hostname'
         cert:
           type: string
-          description: TLS/SSL certificate
+          description: TLS/SSL certificate.
           example: |
             -----BEGIN CERTIFICATE-----
             MIICaDCCAVACAQAwIzELMAkGA1UEBhMCQlMxFDASBgNVBAMMC2V4YW1wbGUuY29t
@@ -1706,7 +1709,7 @@ components:
             -----END CERTIFICATE-----
         chain:
           type: string
-          description: TLS/SSL intermediate chain (if provided, else empty string)
+          description: TLS/SSL intermediate chain (if provided, else empty string).
           example: |
             -----BEGIN CERTIFICATE-----
             MIICaDCCAVACAQAwIzELMAkGA1UEBhMCQlMxFDASBgNVBAMMC2V4YW1wbGUuY29t
@@ -1879,6 +1882,7 @@ components:
         target_pass:
           type: string
           example: password
+          format: password
         min_age:
           type: integer
           format: int32

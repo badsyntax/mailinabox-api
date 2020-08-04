@@ -6,23 +6,15 @@ OpenAPI HTTP specification & client SDK's for the Mail-in-a-Box API.
 
 ## OpenAPI HTTP specification
 
-See: https://github.com/badsyntax/mailinabox-api/blob/master/schema/mailinabox.yml
-
-Note the specification is not complete and does not cover all endpoints, although I do plan on covering the entire API, stay tuned.
-
-### Swagger editor
-
-Use the swagger editor to explore the api:
-
-https://editor.swagger.io/?url=https://raw.githubusercontent.com/badsyntax/mailinabox-api/master/schema/mailinabox.yml
+- [View spec](https://github.com/badsyntax/mailinabox-api/blob/master/schema/mailinabox.yml)
+- [View API docs](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/badsyntax/mailinabox/api-spec/api/mailinabox.yml)
 
 ## Clients
 
-Currently only shipping `typescript-fetch` but feel free to create an issue if you'd like a client SDK in a different language.
+### typescript-fetch
 
-### `typescript-fetch`
-
-https://www.npmjs.com/package/mailinabox-api
+- https://github.com/badsyntax/mailinabox-api-ts
+- https://www.npmjs.com/package/mailinabox-api
 
 <details><summary>Template changes</summary>
 
@@ -72,6 +64,11 @@ Prevent quotes added to text/plain POST body. This seems like a bug in the gener
 ```
 
 </details>
+
+### php
+
+- https://github.com/badsyntax/mailinabox-api-php
+- https://packagist.org/packages/mailinabox/mailinabox-api
 
 ## License
 

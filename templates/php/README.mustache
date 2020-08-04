@@ -1,0 +1,141 @@
+# {{packageName}}
+
+[![Build & Publish](https://github.com/badsyntax/mailinabox-api/workflows/Build%20&%20Publish/badge.svg)](https://github.com/badsyntax/mailinabox-api/actions?query=workflow%3A%22Build+%26+Publish%22)
+
+PHP client SDK for the Mail-in-a-Box API.
+
+- API version: {{appVersion}}
+{{#artifactVersion}}
+- Package version: {{artifactVersion}}
+{{/artifactVersion}}
+{{^hideGenerationTimestamp}}
+- Build date: {{generatedDate}}
+{{/hideGenerationTimestamp}}
+
+**NOTE:** This package is [auto-generated](https://github.com/badsyntax/mailinabox-api) from the Mail-In-A-Box OpenAPI spec.
+
+## Requirements
+
+PHP 5.5 and later
+
+## Installation & Usage
+
+### Composer
+
+To install the bindings via [Composer](http://getcomposer.org/), add the following to `composer.json`:
+
+```json
+{
+  "require": {
+    "{{artifactId}}": "{{artifactVersion}}"
+  }
+}
+```
+
+Then run `composer install`
+
+### Manual Installation
+
+Download the files and include `autoload.php`:
+
+```php
+    require_once('/path/to/{{gitRepoId}}/vendor/autoload.php');
+```
+
+## Tests
+
+To run the unit tests:
+
+```bash
+composer install
+./vendor/bin/phpunit
+```
+
+## Getting Started
+
+Please follow the [installation procedure](#installation--usage) and then run the following:
+
+```php
+<?php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+{{#apiInfo}}{{#apis}}{{#-first}}{{#operations}}{{#operation}}{{#-first}}
+{{> php_doc_auth_partial}}
+$apiInstance = new {{invokerPackage}}\Api\{{classname}}(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(){{#hasAuthMethods}},
+    $config{{/hasAuthMethods}}
+);
+{{#allParams}}${{paramName}} = {{{example}}}; // {{{dataType}}} | {{{description}}}
+{{/allParams}}
+
+try {
+    {{#returnType}}$result = {{/returnType}}$apiInstance->{{{operationId}}}({{#allParams}}${{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}});{{#returnType}}
+    print_r($result);{{/returnType}}
+} catch (Exception $e) {
+    echo 'Exception when calling {{classname}}->{{operationId}}: ', $e->getMessage(), PHP_EOL;
+}
+{{/-first}}{{/operation}}{{/operations}}{{/-first}}{{/apis}}{{/apiInfo}}
+?>
+```
+
+## Documentation for API Endpoints
+
+All URIs are relative to *{{basePath}}*
+
+Class | Method | HTTP request | Description
+------------ | ------------- | ------------- | -------------
+{{#apiInfo}}{{#apis}}{{#operations}}{{#operation}}*{{classname}}* | [**{{operationId}}**]({{apiDocPath}}/{{classname}}.md#{{operationIdLowerCase}}) | **{{httpMethod}}** {{path}} | {{#summary}}{{summary}}{{/summary}}
+{{/operation}}{{/operations}}{{/apis}}{{/apiInfo}}
+
+## Documentation For Models
+
+{{#models}}{{#model}} - [{{{classname}}}]({{modelDocPath}}/{{{classname}}}.md)
+{{/model}}{{/models}}
+
+## Documentation For Authorization
+
+{{^authMethods}}
+All endpoints do not require authorization.
+{{/authMethods}}
+{{#authMethods}}
+{{#last}} Authentication schemes defined for the API:{{/last}}
+
+## {{{name}}}
+
+{{#isApiKey}}
+
+- **Type**: API key
+- **API key parameter name**: {{{keyParamName}}}
+- **Location**: {{#isKeyInQuery}}URL query string{{/isKeyInQuery}}{{#isKeyInHeader}}HTTP header{{/isKeyInHeader}}
+
+{{/isApiKey}}
+{{#isBasic}}
+{{#isBasicBasic}}
+
+- **Type**: HTTP basic authentication
+{{/isBasicBasic}}
+{{#isBasicBearer}}
+
+- **Type**: Bearer authentication{{#bearerFormat}} ({{{.}}}){{/bearerFormat}}
+{{/isBasicBearer}}
+{{/isBasic}}
+{{#isOAuth}}
+
+- **Type**: OAuth
+- **Flow**: {{{flow}}}
+- **Authorization URL**: {{{authorizationUrl}}}
+- **Scopes**: {{^scopes}}N/A{{/scopes}}
+{{#scopes}}
+- **{{{scope}}}**: {{{description}}}
+{{/scopes}}
+{{/isOAuth}}
+
+{{/authMethods}}
+
+## License
+
+MIT License
+
+Copyright (c) 2020 Richard Willis

@@ -10,40 +10,94 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node 12.18.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.18.x
       - name: Install dependencies
         run: |
           npm install
       - name: Validate
         run: |
           npm run validate
-  build-and-publish:
+  build-and-publish-typescript-fetch:
     needs: [validate]
-    name: Publish
+    name: Build and publish typescript-fetch
     runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'published'
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node 12.18.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.18.x
       - name: Install dependencies
         run: |
           npm install
-      - name: Build clients
+      - name: Checkout package source
+        uses: actions/checkout@v2
+        with:
+          repository: badsyntax/mailinabox-api-ts
+          path: clients/typescript-fetch
+          fetch-depth: 0
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }}
+      - name: Clean package source
         run: |
-          npm run build
-      - name: Publish package
+          cd clients/typescript-fetch
+          git rm -rf .
+          git clean -fxd
+      - name: Build typescript-fetch client
+        run: |
+          tag=${GITHUB_REF#refs/tags/}
+          # tag=0.0.0-SNAPSHOT.5
+          PACKAGE_VERSION="$tag" npm run generate:typescript-fetch
+      - name: Push changes to package source
+        run: |
+          tag=${GITHUB_REF#refs/tags/}
+          # tag=0.0.0-SNAPSHOT.5
+          cd clients/typescript-fetch
+          git config user.name "Richard Willis"
+          git config user.email "willis.rh@gmail.com"
+          git add .
+          git commit -m "Generate code for version $tag"
+          git push
+          git tag "$tag"
+          git push --tags
+      - name: Publish typescript-fetch package
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           cd clients/typescript-fetch
-          tag=${GITHUB_REF#refs/tags/}
-          echo "Setting package version $tag"
-          npm --no-git-tag-version version "$tag"
           echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
           npm publish
+  build-and-publish-php:
+    needs: [validate]
+    name: Build and publish php
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'published'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          npm install
+      - name: Checkout package source
+        uses: actions/checkout@v2
+        with:
+          repository: badsyntax/mailinabox-api-php
+          path: clients/php
+          fetch-depth: 0
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }}
+      - name: Clean package source
+        run: |
+          cd clients/php
+          git rm -rf .
+          git clean -fxd
+      - name: Build php client
+        run: |
+          tag=${GITHUB_REF#refs/tags/}
+          # tag=0.0.0-SNAPSHOT.5
+          PACKAGE_VERSION="$tag" npm run generate:php
+      - name: Push changes to package source
+        run: |
+          tag=${GITHUB_REF#refs/tags/}
+          # tag=0.0.0-SNAPSHOT.5
+          cd clients/php
+          git config user.name "Richard Willis"
+          git config user.email "willis.rh@gmail.com"
+          git add .
+          git commit -m "Generate code for version $tag"
+          git push
+          git tag "$tag"
+          git push --tags

@@ -1,8 +1,13 @@
 ## {{npmName}}
 
-![Build & Publish](https://github.com/badsyntax/mailinabox-api/workflows/Build%20&%20Publish/badge.svg)
+[![Build & Publish](https://github.com/badsyntax/mailinabox-api/workflows/Build%20&%20Publish/badge.svg)](https://github.com/badsyntax/mailinabox-api/actions?query=workflow%3A%22Build+%26+Publish%22)
 
 JavaScript/TypeScript client SDK for the Mail-in-a-Box API.
+
+- API version: {{appVersion}}
+- Package version: {{npmVersion}}
+
+**NOTE:** This package is [auto-generated](https://github.com/badsyntax/mailinabox-api) from the Mail-In-A-Box OpenAPI spec.
 
 ### Installing
 
@@ -34,12 +39,11 @@ const apiConfigParams: ConfigurationParameters = {
 
 const apiConfig = new Configuration(apiConfigParams);
 
-const aliasesApi = new AliasesApi(apiConfig);
 const userApi = new UserApi(apiConfig);
 const systemApi = new SystemApi(apiConfig);
 const sslApi = new SslApi(apiConfig);
 const dnsApi = new DnsApi(apiConfig);
-const usersApi = new UsersApi(apiConfig);
+const mailApi = new MailApi(apiConfig);
 const webApi = new WebApi(apiConfig);
 
 // example request

@@ -10,10 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node 12.18.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.18.x
       - name: Install dependencies
         run: |
           npm install
@@ -27,10 +23,6 @@ jobs:
     if: github.event_name == 'release' && github.event.action == 'published'
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node 12.18.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.18.x
       - name: Install dependencies
         run: |
           npm install
@@ -54,10 +46,6 @@ jobs:
     # if: github.event_name == 'release' && github.event.action == 'published'
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node 12.18.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.18.x
       - name: Install dependencies
         run: |
           npm install
@@ -66,17 +54,29 @@ jobs:
         with:
           repository: badsyntax/mailinabox-api-php
           path: clients/php
+          fetch-depth: 0
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }}
+      - name: Clean package source
+        run: |
+          cd clients/php
+          git rm -rf .
+          git clean -fxd
       - name: Build php client
         run: |
           npm run generate:php
       - name: Push changes to package source
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
           tag=${GITHUB_REF#refs/tags/}
+          echo "TAG: $tag"
+          tag="0.0.0"
           cd clients/php
+          echo -e "\n## Tagged Version\n\n$tag" >> README.md
+          git config user.name "Richard Willis"
+          git config user.email "willis.rh@gmail.com"
           git add .
-          git commit -m "Generated code for version $tag"
-          # git push
+          git commit -m "Generate code for version $tag"
+          git push
+          git tag "$tag"
+          git push --tags
       # - name: Publish php package
       #   run: |

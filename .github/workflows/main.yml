@@ -101,3 +101,42 @@ jobs:
           git push
           git tag "$tag"
           git push --tags
+  build-and-publish-python:
+    needs: [validate]
+    name: Build and publish python
+    runs-on: ubuntu-latest
+    # if: github.event_name == 'release' && github.event.action == 'published'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          npm install
+      - name: Checkout package source
+        uses: actions/checkout@v2
+        with:
+          repository: badsyntax/mailinabox-api-py
+          path: clients/python
+          fetch-depth: 0
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN_GITHUB }}
+      - name: Clean package source
+        run: |
+          cd clients/python
+          git rm -rf .
+          git clean -fxd
+      - name: Build python client
+        run: |
+          tag=${GITHUB_REF#refs/tags/}
+          tag=0.0.0-SNAPSHOT.5
+          PACKAGE_VERSION="$tag" npm run generate:python
+      - name: Push changes to package source
+        run: |
+          tag=${GITHUB_REF#refs/tags/}
+          tag=0.0.0-SNAPSHOT.5
+          cd clients/python
+          git config user.name "Richard Willis"
+          git config user.email "willis.rh@gmail.com"
+          git add .
+          git commit -m "Generate code for version $tag"
+          git push
+          git tag "$tag"
+          git push --tags

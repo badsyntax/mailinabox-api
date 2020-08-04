@@ -41,12 +41,12 @@ jobs:
       - name: Build typescript-fetch client
         run: |
           tag=${GITHUB_REF#refs/tags/}
-          # tag=0.0.2
+          # tag=0.0.3
           PACKAGE_VERSION="$tag" npm run generate:typescript-fetch
       - name: Push changes to package source
         run: |
           tag=${GITHUB_REF#refs/tags/}
-          # tag=0.0.2
+          # tag=0.0.3
           cd clients/typescript-fetch
           git config user.name "Richard Willis"
           git config user.email "willis.rh@gmail.com"
@@ -87,12 +87,12 @@ jobs:
       - name: Build php client
         run: |
           tag=${GITHUB_REF#refs/tags/}
-          # tag=0.0.2
+          # tag=0.0.3
           PACKAGE_VERSION="$tag" npm run generate:php
       - name: Push changes to package source
         run: |
           tag=${GITHUB_REF#refs/tags/}
-          # tag=0.0.2
+          # tag=0.0.3
           cd clients/php
           git config user.name "Richard Willis"
           git config user.email "willis.rh@gmail.com"
@@ -127,13 +127,13 @@ jobs:
       - name: Build python client
         run: |
           tag=${GITHUB_REF#refs/tags/}
-          tag=0.0.2
+          tag=0.0.3
           pip install black
           PACKAGE_VERSION="$tag" npm run generate:python
       - name: Push changes to package source
         run: |
           tag=${GITHUB_REF#refs/tags/}
-          tag=0.0.2
+          tag=0.0.3
           cd clients/python
           git config user.name "Richard Willis"
           git config user.email "willis.rh@gmail.com"

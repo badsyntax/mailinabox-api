@@ -3,6 +3,12 @@
 {{>partial_header}}
 
 from setuptools import setup, find_packages  # noqa: H301
+from pathlib import Path  # noqa E402
+
+def get_long_description():
+    return (
+        (CURRENT_DIR / "README.md").read_text(encoding="utf8")
+    )
 
 NAME = "{{{projectName}}}"
 VERSION = "{{packageVersion}}"
@@ -36,9 +42,8 @@ setup(
     packages=find_packages(exclude=["test", "tests"]),
     include_package_data=True,
     {{#licenseInfo}}license="{{licenseInfo}}",
-    {{/licenseInfo}}long_description="""\
-    Python client SDK for the Mail-in-a-Box API  # noqa: E501
-    """
+    {{/licenseInfo}}long_description=get_long_description(),
+    long_description_content_type="text/markdown"
 )
 {{/hasMore}}
 {{/apis}}

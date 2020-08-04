@@ -12,7 +12,7 @@ $(npm bin)/openapi-generator generate \
   -g python \
   -t templates/python \
   -o clients/python \
-  --additional-properties=packageName=mailinaboxapi,packageVersion="$PACKAGE_VERSION",library=urllib3,packageUrl=https://github.com/badsyntax/mailinabox-api-py \
+  --additional-properties=projectName=mailinabox-api,packageName=mailinabox_api,packageVersion="$PACKAGE_VERSION",library=urllib3,packageUrl=https://github.com/badsyntax/mailinabox-api-py \
   --enable-post-process-file \
   --generate-alias-as-model \
   --git-user-id=badsyntax \

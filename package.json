@@ -4,8 +4,9 @@
   "description": "Client SDK's for the Mail-in-a-Box API",
   "private": true,
   "scripts": {
-    "generate:typescript-fetch": "scripts/generate-ts.sh",
+    "generate:typescript-fetch": "scripts/generate-typescript-fetch.sh",
     "generate:php": "scripts/generate-php.sh",
+    "generate:python": "scripts/generate-python.sh",
     "validate": "openapi-generator validate -i schema/mailinabox.yml",
     "prevalidate": "npm run lint",
     "lint": "prettier --check \"**/*.{md,yml,json}\" --ignore-path ./.prettierignore.main",

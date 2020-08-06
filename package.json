@@ -6,6 +6,7 @@
   "scripts": {
     "generate:typescript-fetch": "scripts/generate-typescript-fetch.sh",
     "generate:php": "scripts/generate-php.sh",
+    "generate:java": "scripts/generate-java.sh",
     "generate:python": "scripts/generate-python.sh",
     "validate": "openapi-generator validate -i schema/mailinabox.yml",
     "prevalidate": "npm run lint",
@@ -18,6 +19,7 @@
     "@openapitools/openapi-generator-cli": "^1.0.15-4.3.1",
     "@prettier/plugin-php": "^0.14.3",
     "prettier": "^2.0.5",
+    "prettier-plugin-java": "^0.8.0",
     "typescript": "^3.9.7"
   },
   "prettier": {

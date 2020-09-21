@@ -20,7 +20,7 @@
     "@prettier/plugin-php": "^0.14.3",
     "prettier": "^2.0.5",
     "redoc-cli": "^0.9.10",
-    "typescript": "^3.9.7"
+    "typescript": "^4.0.3"
   },
   "prettier": {
     "singleQuote": true,

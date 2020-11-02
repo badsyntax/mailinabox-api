@@ -19,7 +19,7 @@
     "@openapitools/openapi-generator-cli": "^1.0.15-4.3.1",
     "@prettier/plugin-php": "^0.14.3",
     "prettier": "^2.0.5",
-    "redoc-cli": "^0.9.10",
+    "redoc-cli": "^0.9.13",
     "typescript": "^3.9.7"
   },
   "prettier": {

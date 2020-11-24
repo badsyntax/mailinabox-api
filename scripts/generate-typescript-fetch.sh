@@ -4,7 +4,7 @@ PACKAGE_VERSION=${PACKAGE_VERSION:-"0.0.0"}
 CLIENT_PATH=./clients/typescript-fetch
 
 TS_POST_PROCESS_FILE="$(npm bin)/prettier --write --config ./.prettierrc.ts.json" \
-$(npm bin)/openapi-generator generate \
+"$(npm bin)"/openapi-generator-cli generate \
   -i schema/mailinabox.yml \
   -g typescript-fetch \
   -t templates/typescript-fetch \

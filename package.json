@@ -8,7 +8,7 @@
     "generate:php": "scripts/generate-php.sh",
     "generate:python": "scripts/generate-python.sh",
     "generate:docs": "scripts/generate-docs.sh",
-    "validate": "openapi-generator validate -i schema/mailinabox.yml",
+    "validate": "openapi-generator-cli validate -i schema/mailinabox.yml",
     "prevalidate": "npm run lint",
     "lint": "prettier --check \"**/*.{md,yml,json}\" --ignore-path ./.prettierignore.main",
     "lint:fix": "prettier --write '**/*.{md,yml,json}' --ignore-path ./.prettierignore.main"
@@ -16,10 +16,10 @@
   "author": "Richard Willis <willis.rh@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^1.0.15-4.3.1",
-    "@prettier/plugin-php": "^0.14.3",
+    "@openapitools/openapi-generator-cli": "^2.1.7",
+    "@prettier/plugin-php": "^0.16.0",
     "prettier": "^2.2.0",
-    "redoc-cli": "^0.9.10",
+    "redoc-cli": "^0.10.1",
     "typescript": "^4.1.2"
   },
   "prettier": {

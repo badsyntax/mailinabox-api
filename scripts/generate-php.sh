@@ -3,7 +3,7 @@
 PACKAGE_VERSION=${PACKAGE_VERSION:-"0.0.0"}
 
 PHP_POST_PROCESS_FILE="$(npm bin)/prettier --write --config ./.prettierrc.php.json" \
-$(npm bin)/openapi-generator generate \
+"$(npm bin)"/openapi-generator-cli generate \
   -i schema/mailinabox.yml \
   -g php \
   -t templates/php \

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-$(npm bin)/redoc-cli bundle schema/mailinabox.yml \
+"$(npm bin)"/redoc-cli bundle schema/mailinabox.yml \
   -t docs/template.hbs \
   -o docs/api-docs.html \
   --templateOptions.metaDescription="Mail-in-a-Box HTTP API" \

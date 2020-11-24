@@ -7,7 +7,7 @@ PACKAGE_VERSION=${PACKAGE_VERSION:-"0.0.0"}
 BLACK_PATH=$(which black)
 
 PYTHON_POST_PROCESS_FILE="$BLACK_PATH" \
-$(npm bin)/openapi-generator generate \
+"$(npm bin)"/openapi-generator-cli generate \
   -i schema/mailinabox.yml \
   -g python \
   -t templates/python \

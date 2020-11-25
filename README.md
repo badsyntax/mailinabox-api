@@ -2,7 +2,7 @@
 
 ![Build & Publish](https://github.com/badsyntax/mailinabox-api/workflows/Build%20&%20Publish/badge.svg)
 
-Client SDK's for the Mail-in-a-Box API. 
+Client SDK's for the Mail-in-a-Box API.
 
 Code is generated using the [openapi-generator](https://github.com/OpenAPITools/openapi-generator) and the [HTTP spec](https://github.com/mail-in-a-box/mailinabox/blob/master/api/mailinabox.yml).
 

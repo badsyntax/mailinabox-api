@@ -16,7 +16,7 @@
   "author": "Richard Willis <willis.rh@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^2.1.7",
+    "@openapitools/openapi-generator-cli": "^2.1.12",
     "@prettier/plugin-php": "^0.16.0",
     "prettier": "^2.2.0",
     "redoc-cli": "^0.10.1",

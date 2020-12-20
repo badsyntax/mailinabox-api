@@ -3,9 +3,12 @@
 PACKAGE_VERSION=${PACKAGE_VERSION:-"0.0.0"}
 CLIENT_PATH=./clients/typescript-fetch
 
+SCHEMA="$(npm config get tmp)/mailinabox.yml"
+curl -s https://raw.githubusercontent.com/mail-in-a-box/mailinabox/master/api/mailinabox.yml --output "$SCHEMA"
+
 TS_POST_PROCESS_FILE="$(npm bin)/prettier --write --config ./.prettierrc.ts.json" \
 "$(npm bin)"/openapi-generator-cli generate \
-  -i schema/mailinabox.yml \
+  -i "$SCHEMA" \
   -g typescript-fetch \
   -t templates/typescript-fetch \
   -o "$CLIENT_PATH" \

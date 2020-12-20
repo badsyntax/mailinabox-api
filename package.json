@@ -7,8 +7,7 @@
     "generate:typescript-fetch": "scripts/generate-typescript-fetch.sh",
     "generate:php": "scripts/generate-php.sh",
     "generate:python": "scripts/generate-python.sh",
-    "generate:docs": "scripts/generate-docs.sh",
-    "validate": "openapi-generator-cli validate -i schema/mailinabox.yml",
+    "validate": "tmp_file=\"$(npm config get tmp)/mailinabox.yml\" && curl -s https://raw.githubusercontent.com/mail-in-a-box/mailinabox/master/api/mailinabox.yml --output \"$tmp_file\" && openapi-generator-cli validate -i \"$tmp_file\"",
     "prevalidate": "npm run lint",
     "lint": "prettier --check \"**/*.{md,yml,json}\" --ignore-path ./.prettierignore.main",
     "lint:fix": "prettier --write '**/*.{md,yml,json}' --ignore-path ./.prettierignore.main"
@@ -16,11 +15,10 @@
   "author": "Richard Willis <willis.rh@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^2.1.7",
-    "@prettier/plugin-php": "^0.16.0",
-    "prettier": "^2.2.0",
-    "redoc-cli": "^0.10.1",
-    "typescript": "^4.1.2"
+    "@openapitools/openapi-generator-cli": "^2.1.12",
+    "@prettier/plugin-php": "^0.16.1",
+    "prettier": "^2.2.1",
+    "typescript": "^4.1.3"
   },
   "prettier": {
     "singleQuote": true,

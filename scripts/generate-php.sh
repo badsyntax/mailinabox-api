@@ -2,9 +2,12 @@
 
 PACKAGE_VERSION=${PACKAGE_VERSION:-"0.0.0"}
 
+SCHEMA="$(npm config get tmp)/mailinabox.yml"
+curl -s https://raw.githubusercontent.com/mail-in-a-box/mailinabox/master/api/mailinabox.yml --output "$SCHEMA"
+
 PHP_POST_PROCESS_FILE="$(npm bin)/prettier --write --config ./.prettierrc.php.json" \
 "$(npm bin)"/openapi-generator-cli generate \
-  -i schema/mailinabox.yml \
+  -i "$SCHEMA" \
   -g php \
   -t templates/php \
   -o clients/php \

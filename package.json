@@ -15,7 +15,7 @@
   "author": "Richard Willis <willis.rh@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^2.1.12",
+    "@openapitools/openapi-generator-cli": "^2.1.17",
     "@prettier/plugin-php": "^0.16.1",
     "prettier": "^2.2.1",
     "typescript": "^4.1.3"

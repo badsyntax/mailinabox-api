@@ -1,6 +1,6 @@
 # Mail-in-a-Box API
 
-![Build & Publish](https://github.com/badsyntax/mailinabox-api/workflows/Build%20&%20Publish/badge.svg)
+[![Build & Publish](https://github.com/badsyntax/mailinabox-api/actions/workflows/main.yml/badge.svg)](https://github.com/badsyntax/mailinabox-api/actions/workflows/main.yml)
 
 Client SDK's for the Mail-in-a-Box API.
 

@@ -9,7 +9,7 @@ jobs:
     name: Validate
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3.1.0
       - name: Install dependencies
         run: |
           npm install
@@ -22,12 +22,12 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'published'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3.1.0
       - name: Install dependencies
         run: |
           npm install
       - name: Checkout package source
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.1.0
         with:
           repository: badsyntax/mailinabox-api-ts
           path: clients/typescript-fetch
@@ -68,12 +68,12 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'published'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3.1.0
       - name: Install dependencies
         run: |
           npm install
       - name: Checkout package source
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.1.0
         with:
           repository: badsyntax/mailinabox-api-php
           path: clients/php
@@ -107,13 +107,13 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'published'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3.1.0
       - uses: actions/setup-python@v2
       - name: Install dependencies
         run: |
           npm install
       - name: Checkout package source
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.1.0
         with:
           repository: badsyntax/mailinabox-api-py
           path: clients/python
